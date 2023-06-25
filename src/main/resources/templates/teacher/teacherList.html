@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Danh sách giáo viên</title>
+<link rel="stylesheet" href="">
+</head>
+
+<body>
+	<header th:replace="common/headerAdmin :: headerAdmin"></header>
+	<div class="container">
+		<h2>Danh sách giáo viên</h2>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Mã giáo viên</th>
+					<th>Tên giáo viên</th>
+					<th>Giới tính</th>
+					<th>Số điện thoại</th>
+					<th>Lựa chọn</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="teacher: ${teacherDTOs}">
+					<td th:text="${teacher.id}"></td>
+					<td th:text="${teacher.name}"></td>
+					
+					<td th:if="${teacher.gender == 'male'}">Nam</td>
+					<td th:if="${teacher.gender == 'female'}">Nữ</td>
+					
+					<td th:text="${teacher.phone}"></td>
+					<td>
+						<a th:href="@{/admin/update-teacher/__${teacher.id}__}">Sửa</a> |
+						<a 
+							class="option-from-user btn-force-delete" 
+							th:dataid="${teacher.id}"
+							data-toggle="modal"
+							data-target="#myModal"
+							href="">Xóa</a> |
+						<a th:href="@{/admin/info-teacher/__${teacher.id}__}">Thông tin</a>
+					</td>
+
+				</tr>
+			</tbody>
+		</table>
+		<a class="btn btn-primary" th:href="@{/admin/add-teacher}">Thêm
+			mới</a>
+		
+		<form action="/admin/delete-teacher/" name="force-delete-form" method="post"></form>
+
+		<div th:replace="common/deleteModal :: deleteModal"></div>
+		
+		<script th:src="@{/js/app.js}" type="text/javascript"></script>
+	</div>
+</body>
+</html>

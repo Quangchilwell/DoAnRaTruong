@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Thông tin phòng học</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Chi tiết phòng học</h2>
+		<div class="table-responsive">
+			<table class="table">
+				<tr>
+					<th>Mã phòng học</th>
+					<td th:text="${room.id}"></td>
+				</tr>
+				
+				<tr>
+					<th>Tên phòng học</th>
+					<td th:text="${room.name}"></td>
+				</tr>
+				
+				<tr>
+					<th>Loại phòng</th>
+					<td th:text="${room.classTypeDTO.name}"></td>
+				</tr>
+				
+				<tr>
+					<th>Số lượng bàn</th>
+					<td th:text="${room.classTypeDTO.quantityTables}"></td>
+				</tr>
+				
+				<tr>
+					<th>Số lượng ghế</th>
+					<td th:text="${room.classTypeDTO.quantityChairs}"></td>
+				</tr>
+				
+				<tr>
+					<th>Tình trạng</th>
+					<td th:if="${room.status == 0}">Bình thường</td>
+					<td th:if="${room.status == 1}">Sửa chữa</td>
+				</tr>
+				
+				<tr>
+					<th>Ngày tạo</th>
+					<td th:text="${room.createdDate}"></td>
+				</tr>
+				
+				<tr>
+					<th>Ngày cập nhật gần nhất</th>
+					<td th:text="${room.updatedDate}"></td>
+				</tr>
+				
+			</table>
+		</div>
+		<a class="btn btn-primary" th:href="@{/admin/class-room-list}">Danh sách phòng</a>
+	</div>
+</body>
+</html>

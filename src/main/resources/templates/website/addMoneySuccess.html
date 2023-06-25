@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/website :: website(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Anh ngữ Minh Quang</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<header th:replace="common/header :: header"></header>
+	<div class="container">
+		<h2>Nạp tiền thành công. Cảm ơn bạn đã tin tưởng chúng tôi</h2>
+		
+		<a th:href="@{/mqe/online-courses-list}">Danh sách khóa học online</a>
+	</div>
+
+</body>
+</html>

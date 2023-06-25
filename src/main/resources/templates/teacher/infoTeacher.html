@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Thông tin giáo viên</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Chi tiết giáo viên</h2>
+		<div class="table-responsive">
+			<table class="table">
+				<tr>
+					<th>Mã giáo viên</th>
+					<td th:text="${teacher.id}"></td>
+				</tr>
+				
+				<tr>
+					<th>Họ tên giáo viên</th>
+					<td th:text="${teacher.name}"></td>
+				</tr>
+				
+				<tr>
+					<th>Ảnh đại diện</th>
+					<td>
+						<img style="width: 100px;" alt="Chưa có" th:src="@{/image/avatarOfTeacher/__${teacher.avatar}__}">
+					</td>
+				</tr>
+				
+				<tr>
+					<th>Giới tính</th>
+					<td th:if="${teacher.gender == 'male'}">Nam</td>
+					<td th:if="${teacher.gender == 'female'}">Nữ</td>
+				</tr>
+				
+				<tr>
+					<th>Ngày sinh</th>
+					<td th:text="${birthday}"></td>
+				</tr>
+				
+				<tr>
+					<th>Ngày vào trung tâm</th>
+					<td th:text="${dateOfJoining}"></td>
+				</tr>
+				
+				<tr>
+					<th>Trình độ học vấn</th>
+					<td th:text="${teacher.degree}"></td>
+				</tr>
+				
+				<tr>
+					<th>Số điện thoại</th>
+					<td th:text="${teacher.phone}"></td>
+				</tr>
+				
+				<tr>
+					<th>Email</th>
+					<td th:text="${teacher.email}"></td>
+				</tr>
+				
+				<tr>
+					<th>Quê quán</th>
+					<td th:text="${teacher.country}"></td>
+				</tr>
+				
+				<tr>
+					<th>Mô tả</th>
+					<td th:text="${teacher.description}"></td>
+				</tr>
+						
+				<tr>
+					<th>Ngày tạo</th>
+					<td th:text="${#dates.format(teacher.createdDate, 'dd-MM-yyyy HH:mm')}"></td>
+				</tr>
+				
+				<tr>
+					<th>Ngày cập nhật gần nhất</th>
+					<td th:text="${#dates.format(teacher.updatedDate, 'dd-MM-yyyy HH:mm')}"></td>
+				</tr>
+				
+			</table>
+		</div>
+		<a class="btn btn-primary" th:href="@{/admin/teacher-list}">Danh sách giáo viên</a>
+	</div>
+</body>
+</html>

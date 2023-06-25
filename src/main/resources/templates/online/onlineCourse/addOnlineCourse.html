@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Thêm mới khóa học Online</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Thêm mới khóa học Online</h2>
+		<form id="form-validation" action="/admin/add-online-course" 
+			method="post" th:object="${onCourseDTO}" enctype="multipart/form-data">
+			
+			<input type="hidden" name="idCourse" th:value="${course.id}"/>
+			
+			<div class="form-group">
+	        	<label for="" class="form-label">Giảng viên giảng dạy</label>
+	        	<select th:field="*{idTeacher}" class="form-control">
+	        		<option th:each="teacher: ${teachers}" th:text="${teacher.name}" 
+	        			th:value="${teacher.id}" />
+	        	</select>
+        	</div>
+			
+			<div class="form-group">
+				<label for="name">Ảnh giới thiệu (nếu có)</label> <input 
+					type="file" th:field="*{file}" class="form-control"/>
+			</div>
+			      	
+        	<div class="form-group">
+	        	<label for="" class="form-label">Mã giảm giá (nếu có)</label>
+	        	<select th:field="*{idDiscount}" class="form-control">
+	        		<option th:value="0"/>Lựa chọn
+	        		<option th:each="code: ${discountDTOs}" th:text="${code.name}" 
+	        			th:value="${code.id}" />
+	        	</select>
+        	</div>
+			
+			<div class="form-group">
+				<label>Mô tả</label>
+				<textarea th:field="*{description}" type="text" class="form-control"></textarea>
+			</div>
+			
+			<button type="submit" class="btn btn-default">Thêm mới</button>
+			<a class="btn btn-primary" th:href="@{/admin/online-course-list}">Danh
+				sách khóa học Online</a>
+		</form>
+	</div>
+
+	
+</body>
+</html>

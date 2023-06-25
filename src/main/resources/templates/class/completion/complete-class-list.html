@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Danh sách lớp học hoán thành</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<header th:replace="common/headerAdmin :: headerAdmin"></header>
+	<div class="container wrapper">
+		<h2>Danh sách lớp học đã hoàn thành</h2>
+		
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Mã lớp học</th>
+					<th>Tên lớp học</th>
+					<th>Giáo viên dạy</th>
+					<th>Phòng học</th>
+					<th>Số buổi hoản thành</th>
+					<th>Trạng thái</th>
+					<th>Lựa chọn</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="class: ${classDTOs}">
+					<td th:text="${class.id}"></td>
+					<td th:text="${class.name}"></td>
+					
+					<td th:text="${class.teacherDTO.name}"></td>
+					
+					<td th:text="${class.classRoomDTO.name}"></td>
+					
+					<td th:text="${class.numberOfLessonsLearned}"></td>
+
+					<td>Đã hoàn thành</td>
+					
+					<td>
+						<a th:href="@{/admin/update-status-students(idClass = ${class.id})}">Trạng thái học viên</a> |
+						<a>Xóa</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

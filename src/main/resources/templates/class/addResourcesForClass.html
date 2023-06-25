@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Thêm mới loại phòng</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Sắp xếp tài nguyên cho lớp học</h2>
+		<form id="form-validation" action="/admin/add-resources-for-class" 
+			method="post" th:object="${classDTO}">
+			<input type="hidden" th:field="*{id}"/>
+	
+			<div class="form-group">
+	        	<label for="" class="form-label">Danh sách giáo viên đáp ứng</label>
+	        	<select th:field="*{idTeacher}" class="form-control">
+	        		<option th:each="teacher: ${teacherDTOs}" th:text="${teacher.name}" 
+	        			th:value="${teacher.id}" />
+	        	</select>
+        	</div>
+
+			<div class="form-group">
+	        	<label for="" class="form-label">Danh sách trợ giảng đáp ứng</label>
+	        	<select th:field="*{idTutor}" class="form-control">
+	        		<option th:each="tutorDTO: ${tutorDTOs}" th:text="${tutorDTO.name}" 
+	        			th:value="${tutorDTO.id}" />
+	        	</select>
+        	</div>
+			
+			<div class="form-group">
+	        	<label for="" class="form-label">Danh sách phòng học đáp ứng</label>
+	        	<select th:field="*{idClassRoom}" class="form-control">
+	        		<option th:each="room: ${classRoomDTOs}" th:text="${room.name}" 
+	        			th:value="${room.id}" />
+	        	</select>
+        	</div>
+			
+			
+			<button type="submit" class="btn btn-default">Sắp xếp</button>
+			<a class="btn btn-primary" th:href="@{/admin/class-list}">Danh
+				sách lớp học</a>
+		</form>
+	</div>
+
+	
+</body>
+</html>

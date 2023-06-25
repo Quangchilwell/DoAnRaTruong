@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Danh sách lớp học đang hoạt động</title>
+<link rel="stylesheet" href="">
+</head>
+
+<body>
+	<header th:replace="common/headerAdmin :: headerAdmin"></header>
+	<div class="container">
+		<h2>Các buổi học đã hoàn thành của 
+			<span th:text="${class.name}"></span>
+		</h2>
+		
+		
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Ngày học</th>
+					<th>Ca</th>
+					<th>Buổi học số</th>
+					<th>Thời gian hoàn thành</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="lesson: ${lessons}">
+					<td th:text="${lesson.day}"></td>
+					<td th:text="${lesson.classOpeningDTO.shiftDTO.name}"></td>
+					<td th:text="${lesson.lesson}"></td>
+					<td th:text="${lesson.completedAt}"></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<a class="btn btn-primary" th:href="@{/admin/postpone-class-list(idClass=${class.id})}">Các buổi học bị hoãn</a>
+	</div>
+</body>
+</html>

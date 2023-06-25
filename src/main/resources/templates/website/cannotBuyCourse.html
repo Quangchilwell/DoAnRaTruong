@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/website :: website(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Anh ngữ Minh Quang</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<header th:replace="common/header :: header"></header>
+	<div class="container">
+		<h2>Số tiền trong tài khoản của bạn không đủ để thực hiện mua khóa học này. 
+			Hãy nạp thêm tiền để có thể mua khóa học sớm nhất bạn nhé.
+		</h2>
+		
+		<a th:href="@{/mqe/add-money-for-your-account}" class="btn btn-primary">Nạp thêm tiền</a>
+		
+		<a th:href="@{/mqe/home}" class="btn btn-primary">Về trang chủ</a>
+	</div>
+
+</body>
+</html>

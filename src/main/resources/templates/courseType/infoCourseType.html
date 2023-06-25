@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Thông tin loại khóa học</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Chi tiết loại khóa học</h2>
+		<div class="table-responsive">
+			<table class="table">
+				<tr>
+					<th>ID</th>
+					<td th:text="${course.id}"></td>
+				</tr>
+				
+				<tr>
+					<th>Hình thức dạy</th>
+					<td th:text="${course.name}"></td>
+				</tr>
+				
+				<tr>
+					<th>Mô tả</th>
+					<td th:text="${course.description}"></td>
+				</tr>
+				
+				<tr>
+					<th>Ngày tạo</th>
+					<td th:text="${#dates.format(course.createdDate, 'dd-MM-yyyy HH:mm')}"></td>
+				</tr>
+				
+				<tr>
+					<th>Ngày cập nhật gần nhất</th>
+					<td th:text="${#dates.format(course.updatedDate, 'dd-MM-yyyy HH:mm')}"></td>
+				</tr>
+				
+			</table>
+		</div>
+		<a class="btn btn-primary" th:href="@{/admin/course-type-list}">Danh sách hình thức học</a>
+	</div>
+</body>
+</html>

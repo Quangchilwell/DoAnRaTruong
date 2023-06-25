@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/website :: website(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Anh ngữ Minh Quang</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<header th:replace="common/header :: header"></header>
+	
+	<div class="body-course-detail">
+           <div class="container">
+                <div class="course-detail row">
+                    <img class="course-detail-img col-sm-6" 
+                        th:src="@{/image/imgCourses/__${onCourse.courseDTO.image}__}" alt="No img">
+
+                    <div class="course-detail-info col-sm-6">
+                        <h3 th:text="${onCourse.courseDTO.name}"></h3>
+                        <div class="course-detail-price">
+                            <!--  <p class="course-detail-price-old">Giá bán cũ: 
+                            	<span>400.000 VNĐ</span></p>-->
+                            <p class="course-detail-price-new">Giá hiện tại: 
+                            	<span th:text="${#numbers.formatDecimal(onCourse.courseDTO.tuition, 0, 'COMMA', 0, 'POINT')}">
+									1,145,000
+								</span> VNĐ
+                            </p>
+                        </div>
+                        <p class="course-detail-desc" th:text="${onCourse.courseDTO.description}"></p>
+
+                        <div th:if="${actived == null}" class="course-detail-selection">
+                            <a th:href="@{/mqe/buy-online-course/__${onCourse.id}__}" class="course-detail-buy-btn btn-register">Mua ngay</a>
+                            <a th:href="@{/mqe/add-money-for-your-account}" class="course-detail-add-money btn-login">Nạp tiền ngay</a>
+                        </div>
+                        
+                        <div th:if="${actived != null}" class="course-detail-selection">
+                            <a href="" class="course-detail-buy-btn btn-register">Vào học ngay</a>
+                        </div>
+                    </div>
+                </div>
+           </div>
+       </div>
+	
+	<footer th:replace="common/footer :: footer"></footer>
+</body>
+</html>

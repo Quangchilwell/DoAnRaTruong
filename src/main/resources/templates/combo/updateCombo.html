@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Cập nhật combo</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Cập nhật combo</h2>
+		<form id="form-validation" action="/admin/update-combo" 
+			method="post" th:object="${comboDTO}">
+		
+			<input th:field="*{id}" type="hidden"/>
+			<input type="hidden" th:field="*{totalPrice}" class="form-control" />
+			<input type="hidden" th:field="*{newTotalPrice}" class="form-control" />
+			<input type="hidden" th:field="*{quantiityCourses}" class="form-control" />
+		
+			<div class="form-group">
+				<label for="name">Tên combo</label> <input
+					type="text" th:field="*{name}" class="form-control" placeholder="Nhập tên combo"/>
+				<p style="color: red;" th:each="error: ${#fields.errors('name')}"
+					th:text="#{validation.require}"></p>
+			</div>
+			
+			<div class="form-group">
+				<label for="discount">Phần trăm giảm giá</label> <input
+					type="number" th:field="*{discount}" class="form-control" placeholder="Nhập giảm giá"/>
+				<p style="color: red;" th:each="error: ${#fields.errors('discount')}"
+					th:text="#{validation.require}"></p>
+			</div>
+
+			
+			<div class="form-group">
+				<label>Mô tả</label>
+				<textarea th:field="*{description}" type="text" class="form-control"></textarea>
+			</div>
+			
+			<button type="submit" class="btn btn-default">Cập nhật</button>
+			<a class="btn btn-primary" th:href="@{/admin/course-type-list}">Danh
+				sách loại combo</a>
+		</form>
+	</div>
+
+	
+</body>
+</html>

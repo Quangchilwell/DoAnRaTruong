@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Danh sách học viên</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<header th:replace="common/headerAdmin :: headerAdmin"></header>
+	<div class="container">
+
+		<h1>Xác nhận học viên đã qua khóa học</h1>
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Mã học viên</th>
+					<th>Họ tên</th>
+					<th>Ngày sinh</th>
+					<th>Lựa chọn</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="register: ${stuDtos}">
+					<td th:text="${register.studentDTO.id}"></td>
+					<td th:text="${register.studentDTO.name}"></td>
+					<td th:text="${register.studentDTO.birthday}"></td>
+					<td>
+						<a th:href="@{/admin/student-complete-class/__${register.id}__}">Qua</a> |
+						<a th:href="@{/student-do-not-complete-class/__${register.id}__}">Không qua</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<a class="btn btn-primary" th:href="@{/admin/confirm-class-completion/__${idClass}__}">Hoàn thành lớp học</a>
+	</div>
+</body>
+</html>

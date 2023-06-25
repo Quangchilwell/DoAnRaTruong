@@ -1,0 +1,69 @@
+
+<header th:fragment="header" class="header container">
+	<div class="header-intro">
+		<div class="header-logo">
+			<img class="logo-img"
+				src="https://www.anhngumshoa.com/theme/frontend/default/images/logo2.png"
+				alt="">
+		</div>
+
+		<ul class="header-contact-list">
+			<li class="header-contact-item"><i class="fa-solid fa-phone"></i>
+				<span>0974 254 682</span></li>
+			<li class="header-contact-item"><i
+				class="fa-regular fa-envelope"></i> <span>quangtoiec@gmail.com</span>
+			</li>
+		</ul>
+
+		<div class="header-expand">
+			<form action="" method="get">
+				<input type="text" class="header-search" placeholder="Tìm kiếm">
+			</form>
+
+			<div th:if="${session.studentLogin == null}" class="header-btn-wrapper">
+				<a th:href="@{/mqe/login}" class="header-btn btn-login">Đăng
+					nhập</a> 
+				<a th:href="@{/mqe/register}" class="header-btn btn-register">Đăng
+					ký</a>
+			</div>
+
+			<div th:if="${session.studentLogin != null}" class="header-btn-wrapper header-logined">
+				<div class="welcome-user">
+					Hi <span th:text=${session.studentLogin.name}></span>
+					<ul class="user-info-list">
+						<li class="user-info-item"><a href="">Thông tin của bạn</a></li>
+						<li class="user-info-item"><a href="">Số tiền hiện tại: 
+							<span th:text="${#numbers.formatDecimal(session.studentLogin.moneyAvailable, 0, 'COMMA', 0, 'POINT')}">
+							1,145,000
+							</span> VNĐ
+						<li class="user-info-item">
+						<a th:href="@{/mqe/my-courses/account/__${session.studentLogin.id}__}">
+							Khóa học của tôi
+						</a></li>
+						<li class="user-info-item"><a th:href="@{/mqe/logout}">Đăng xuất</a></li>
+					</ul>
+				</div>
+
+		</div>
+	</div>
+	</div>
+
+	<!-- header navber -->
+	<ul class="header-navbar-list">
+		<li class="header-navbar-item"><a th:href="@{/mqe/home}">Trang chủ</a></li>
+
+		<li class="header-navbar-item"><a href="">Đội ngũ đào tạo</a></li>
+
+		<li class="header-navbar-item"><a href="">Học viên</a></li>
+
+		<li class="header-navbar-item"><a href="">Lịch khai giảng</a></li>
+
+		<li class="header-navbar-item"><a href="">Khóa học offline</a></li>
+
+		<li class="header-navbar-item"><a th:href="@{/mqe/online-courses-list}">Khóa học online</a></li>
+
+		<li class="header-navbar-item"><a href="">Test online</a></li>
+
+		<li class="header-navbar-item"><a href="">Bài tập lớn</a></li>
+	</ul>
+</header>

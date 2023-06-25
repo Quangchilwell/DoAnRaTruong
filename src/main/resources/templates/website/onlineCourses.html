@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/website :: website(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Anh ngữ Minh Quang</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<header th:replace="common/header :: header"></header>
+
+	<div class="slider">
+		<img class="slider-img"
+			src="https://e4life.vn/wp-content/uploads/2021/08/khoa-hoc-luyen-thi-toeic-online-4Life-English-Center.jpg"
+			alt="">
+	</div>
+
+	<div class="body">
+		<div class="container">
+			<div class="row">
+				<div class="body-catergory col-sm-3">
+					<h3>Danh mục</h3>
+					<ul class="catergories-list">
+						<li th:each="type: ${types}" class="catergory-item">
+						<a href="" th:text="${type.name}">(<span>3</span>)</a>
+						</li>
+					</ul>
+				</div>
+
+				<ul class="course-online-list col-sm-9">
+					<li th:each="onCourse: ${onCourses}" class="course-online-item"><a
+						class="course-online-item-link" th:href="@{/mqe/info-online-course/__${onCourse.id}__}"> <img
+							th:src="@{/image/imgCourses/__${onCourse.courseDTO.image}__}"
+							alt="">
+
+							<div class="course-online-item-content">
+								<span class="course-online-intro" th:text="${onCourse.courseDTO.courseTypeDTO.name}"></span>
+								<h5 class="course-online-name" th:text="${onCourse.courseDTO.name}"></h5>
+								<p class="course-online-intro-desc" th:text="${onCourse.courseDTO.description}"></p>
+								<p class="course-online-teacher" th:text="${onCourse.teacherDTO.name}"></p>
+
+								<div class="course-online-price">
+									<p class="course-online-price-new">
+										<span th:text="${#numbers.formatDecimal(onCourse.courseDTO.tuition, 0, 'COMMA', 0, 'POINT')}">
+											1,145,000
+										</span> VNĐ
+									</p>
+									<!--  <p class="course-online-price-old">400.000 đ</p>-->
+								</div>
+							</div>
+					</a></li>
+
+				</ul>
+
+				<ul class="course-online-pages-list">
+					<li class="course-online-page-item page-active"><a href="">1</a>
+					</li>
+
+					<li class="course-online-page-item"><a href="">2</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<footer th:replace="common/footer :: footer"></footer>
+</body>
+</html>

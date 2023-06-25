@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Thêm mới khóa học cho combo</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<header th:replace="common/headerAdmin :: headerAdmin"></header>
+	<div class="container">
+		<input name="idCombo" th:value="${combo.id}" type="hidden">
+		<h2>
+			Thêm khóa học cho combo <span th:text="${combo.name}"></span>
+		</h2>
+
+		<h3>Danh sách các khóa học</h3>
+		
+		<div class="form-group">
+			<label for="select-all">Chọn tất cả</label>
+			<input name="select-all" class="btn-select-all" type="checkbox"/>
+		</div>
+		
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Khóa học</th>
+					<th>Loại khóa học</th>
+					<th>Hình thức dạy</th>
+					<th>Học phí</th>
+					<th>Thời gian học</th>
+					<th>Chọn vào combo</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="course: ${courseDTOs}">
+					<td th:text="${course.id}"></td>
+					<td th:text="${course.name}"></td>
+					<td th:text="${course.courseTypeDTO.name}"></td>
+					<td th:text="${course.teachingFormDTO.name}"></td>
+					<td><span
+						th:text="${#numbers.formatDecimal(course.tuition, 0, 'COMMA', 0, 'POINT')}">
+							1,145,000 </span> VNĐ</td>
+					<td><span th:text="${course.studyTime}"></span> tháng</td>
+					
+					<td>
+						<a th:href="@{/admin/accept-add-course-for-combo(idCourse=${course.id}, idCombo=${combo.id})}"
+						>Thêm vào combo</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<a class="btn btn-primary" th:href="@{/admin/combo-list}">Danh sách combo</a>
+	</div>
+	<script type="text/javascript" th:src="@{/js/test.js}"></script>
+</body>
+</html>

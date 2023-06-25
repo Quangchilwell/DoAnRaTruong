@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Thêm mới hình thức học</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Thêm mới hình thức học</h2>
+		<form id="form-validation" action="/admin/add-teaching-form" 
+			method="post" th:object="${teachingFormDTO}">
+		
+			<div class="form-group">
+				<label for="name">Loại hình thức</label> <input id="name"
+					type="text" th:field="*{name}" class="form-control" placeholder="Nhập tên hình thức"/>
+				<p style="color: red;" th:each="error: ${#fields.errors('name')}"
+					th:text="#{validation.require}"></p>
+			</div>
+			
+			<div class="form-group">
+				<label>Mô tả</label>
+				<textarea th:field="*{description}" type="text" class="form-control"></textarea>
+			</div>
+			
+			<button type="submit" class="btn btn-default">Thêm mới</button>
+			<a class="btn btn-primary" th:href="@{/admin/teaching-form-list}">Danh
+				sách hình thức dạy</a>
+		</form>
+	</div>
+
+	
+</body>
+</html>

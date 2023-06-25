@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Cập nhật giáo viên</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Cập nhật giáo viên</h2>
+		<form id="form-validation" action="/admin/update-teacher" method="post" th:object="${teacherDTO}"
+				enctype="multipart/form-data">
+		
+			<input type="hidden" th:field="*{id}"/>
+			<div class="form-group">
+				<label for="name">Họ tên giáo viên</label> <input id="name"
+					type="text" th:field="*{name}" class="form-control" placeholder="Nhập tên GV"/>
+				<p style="color: red;" th:each="error: ${#fields.errors('name')}"
+					th:text="#{validation.require}"></p>
+			</div>
+			
+			<img style="width: 200px;" alt="No img" th:src="@{/image/avatarOfTeacher/__${teacherDTO.avatar}__}">
+			
+			<div class="form-group">
+				<label for="country">Ảnh đại diện</label> <input 
+					type="file" th:field="*{file}" class="form-control"/>
+			</div>
+			
+			<div class="form-group">
+	        	<label for="gender" class="form-label">Giới tính</label>
+	        	<select th:field="*{gender}" class="form-control">
+	        		<option value="male">Nam</option>
+	        		<option value="female">Nữ</option>
+	        	</select>
+        	</div>
+        	
+        	<div class="form-group">
+				<label for="birthday">Ngày sinh</label> <input
+					type="date" th:field="*{birthday}" class="form-control" />
+				<p style="color: red;" th:each="error: ${#fields.errors('birthday')}"
+					th:text="#{validation.require}"></p>
+			</div>
+			
+			<div class="form-group">
+				<label for="name">Trình độ học vấn</label> <input 
+					type="text" th:field="*{degree}" class="form-control" placeholder="VD: Tốt nghiệp đại học"/>
+				<p style="color: red;" th:each="error: ${#fields.errors('degree')}"
+					th:text="#{validation.require}"></p>
+			</div>
+			
+			<div class="form-group">
+				<label for="phone">Số điện thoại</label> <input 
+					type="tel" th:field="*{phone}" class="form-control" placeholder="Nhập đúng SĐT"/>
+				<p style="color: red;" th:each="error: ${#fields.errors('phone')}"
+					th:text="#{validation.require}"></p>
+			</div>
+			
+			<div class="form-group">
+				<label for="phone">Email</label> <input 
+					type="email" th:field="*{email}" class="form-control" placeholder="Nhập đúng Email"/>
+				<p style="color: red;" th:each="error: ${#fields.errors('phone')}"
+					th:text="#{validation.require}"></p>
+			</div>
+			
+			<div class="form-group">
+				<label for="country">Quê quán</label> <input 
+					type="text" th:field="*{country}" class="form-control" placeholder="Quê quán"/>
+			</div>
+			
+			<div class="form-group">
+				<label for="dateOfJoining">Ngày vào trung tâm</label> <input 
+					type="date" th:field="*{dateOfJoining}" class="form-control" />
+				<p style="color: red;" th:each="error: ${#fields.errors('dateOfJoining')}"
+					th:text="#{validation.require}"></p>
+			</div>
+			
+			<div class="form-group">
+				<label>Mô tả giáo viên</label>
+				<textarea th:field="*{description}" type="text" class="form-control"></textarea>
+			</div>
+			
+			<button type="submit" class="btn btn-default">Cập nhật</button>
+			<a class="btn btn-primary" th:href="@{/admin/teacher-list}">Danh
+				sách giáo viên</a>
+		</form>
+	</div>
+
+	
+</body>
+</html>

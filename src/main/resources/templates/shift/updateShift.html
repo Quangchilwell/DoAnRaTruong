@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Cập nhật ca học</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Thêm mới ca học</h2>
+		<form id="form-validation" action="/admin/add-shift" method="post" th:object="${shiftDTO}">
+			<input type="hidden" th:field="*{id}"/>
+			
+			<div class="form-group">
+				<label for="day">Tên ca học</label> <input
+					type="text" th:field="*{name}" class="form-control" />
+				<span class="form-message"></span>
+				<p style="color: red;" th:each="error: ${#fields.errors('name')}"
+					th:text="#{validation.require}"></p>
+			</div>
+			
+			<div class="form-group">
+				<label for="day">Giờ bắt đầu</label> <input
+					type="text" th:field="*{startedAt}" class="form-control" />
+				<span class="form-message"></span>
+				<p style="color: red;" th:each="error: ${#fields.errors('startedAt')}"
+					th:text="#{validation.require}"></p>
+			</div>
+			
+			<div class="form-group">
+				<label for="day">Giờ kết thúc</label> <input
+					type="text" th:field="*{endedAt}" class="form-control" />
+				<span class="form-message"></span>
+				<p style="color: red;" th:each="error: ${#fields.errors('endedAt')}"
+					th:text="#{validation.require}"></p>
+			</div>
+
+			<button type="submit" class="btn btn-default">Cập nhật</button>
+			<a class="btn btn-primary" th:href="@{/admin/shift-list}">Danh
+				sách ca học</a>
+		</form>
+	</div>
+
+	
+</body>
+</html>

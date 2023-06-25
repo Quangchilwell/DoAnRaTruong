@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Thông tin khóa học</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Chi tiết khóa học</h2>
+		<div class="table-responsive">
+			<table class="table">
+				<tr>
+					<th>ID</th>
+					<td th:text="${course.id}"></td>
+				</tr>
+				
+				<tr>
+					<th>Loại khóa học</th>
+					<td th:text="${course.courseTypeDTO.name}"></td>
+				</tr>
+				
+				<tr>
+					<th>Tên khóa học</th>
+					<td th:text="${course.name}"></td>
+				</tr>
+				
+				<tr>
+					<th>Ảnh giới thiệu</th>
+					<td >
+						<img style="width: 200px;" alt="" th:src="@{/image/imgCourses/__${course.image}__}">
+					</td>
+				</tr>
+				
+				<tr>
+					<th>Hình thức dạy</th>
+					<td th:text="${course.teachingFormDTO.name}"></td>
+				</tr>
+				
+				<tr>
+					<th>Trình độ</th>
+					<td th:text="${course.level}"></td>
+				</tr>
+				
+				<tr>
+					<th>Thời gian học</th>
+					<td>
+						<span th:text="${course.studyTime}"></span> tháng
+					</td>
+				</tr>
+				
+				<tr>
+					<th>Học phí</th>
+					<td>					
+					<span th:text="${#numbers.formatDecimal(course.tuition, 0, 'COMMA', 0, 'POINT')}">
+						1,145,000
+					</span> VNĐ
+					</td>
+				</tr>
+				
+				<tr>
+					<th>Số học viên theo học</th>
+					<td th:text="${course.quantityStudents}"></td>
+				</tr>
+				
+				<tr>
+					<th>Số lượng video</th>
+					<td th:text="${course.quantityVideos}"></td>
+				</tr>
+				
+				<tr>
+					<th>Mô tả</th>
+					<td th:text="${course.description}"></td>
+				</tr>
+				
+				<tr>
+					<th>Ngày tạo</th>
+					<td th:text="${#dates.format(course.createdDate, 'dd-MM-yyyy HH:mm')}"></td>
+				</tr>
+				
+				<tr>
+					<th>Ngày cập nhật gần nhất</th>
+					<td th:text="${#dates.format(course.updatedDate, 'dd-MM-yyyy HH:mm')}"></td>
+				</tr>
+				
+			</table>
+		</div>
+		<a class="btn btn-primary" th:href="@{/admin/course-list}">Danh sách khóa học</a>
+		
+		<a class="btn btn-primary"
+			th:if="${course.courseTypeDTO.id != 1}" 
+			th:href="@{/admin/add-online-course(idCourse=${course.id})}">Mở khóa online</a>
+	</div>
+</body>
+</html>

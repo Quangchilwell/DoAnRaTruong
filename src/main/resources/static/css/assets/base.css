@@ -1,0 +1,106 @@
+@charset "UTF-8";
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --primary-color: #ec2229;
+    --online-course-color: #FCCF00;
+}
+
+.btn-login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffeaed;
+    color: #ec2229;
+    border: none;
+}
+
+.btn-register{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ec2229;
+    color: white;
+    border: none;
+}
+
+.btn-login:hover, .btn-logout:hover{
+    opacity: 0.9;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.form-input{
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: 8px 10px;
+    border-radius: 8px;
+}
+
+
+.free-block{
+    color: white;
+    background-color: #1d918d;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 20px;
+}
+
+.active-invalid{
+    border: 1px solid red;
+}
+
+.text-error{
+    margin: 0;
+    margin-top: 8px;
+    color: red;
+    font-size: 14px;
+}
+/* FOOOTER */
+.footer{
+    background-color: black;
+    padding: 60px 0;
+}
+
+.footer-wrapper{
+    color: white;
+}
+
+.footer-body{
+    display: flex;
+}
+
+.footer-logo{
+    width: 200px;
+}
+
+.footer-about-us{
+    width: 50%;
+}
+
+.footer-contact{
+    width: 40%;
+    margin-left: 30px;
+}
+
+.footer-contact p{
+    margin: 0;
+}
+
+.footer-social-list{
+    list-style-type: none;
+    display: flex;
+    margin-top: 10px;
+}
+
+.footer-social-item{
+    margin-right: 16px;
+}
+
+.footer-social-item-link i{
+    font-size: 20px;
+}

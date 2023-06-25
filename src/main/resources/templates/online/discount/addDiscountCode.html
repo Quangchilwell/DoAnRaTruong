@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Thêm mới mã giảm giá</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Thêm mới mã giảm</h2>
+		<form id="form-validation" action="/admin/add-discount-code" method="post" th:object="${codeDTO}">
+			<div class="form-group">
+				<label for="day">Tên mã giảm</label> <input
+					type="text" th:field="*{name}" class="form-control" />
+				<span class="form-message"></span>
+				<p style="color: red;" th:each="error: ${#fields.errors('name')}"
+					th:text="#{validation.require}"></p>
+			</div>
+			
+			<div class="form-group">
+				<label for="day">Phần trăm giảm</label> <input
+					type="number" th:field="*{discountPercent}" class="form-control" />
+				<span class="form-message"></span>		
+			</div>
+			
+			<div class="form-group">
+				<label for="day">Số tiền giảm</label> <input
+					type="number" th:field="*{discountPrice}" class="form-control" />
+				<span class="form-message"></span>		
+			</div>
+			
+			<button type="submit" class="btn btn-default">Thêm mới</button>
+			<a class="btn btn-primary" th:href="@{/admin/discount-code-list}">Danh
+				sách mã giảm</a>
+		</form>
+	</div>
+
+	
+</body>
+</html>

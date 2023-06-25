@@ -1,0 +1,196 @@
+@charset "UTF-8";
+.body-catergory{
+
+}
+
+.body-catergory h3{
+    color: #082346;
+    font-size: 26px;
+}
+
+.catergories-list{
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    margin-top: 20px;
+}   
+
+.catergory-item{
+    display: block;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 8px 0;
+}
+
+.catergory-item a{
+    display: block;
+    color: black;
+    width: 100%;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.catergory-item a:hover{
+    text-decoration: none;
+    color: var(--online-course-color);
+}
+
+.body-course-detail{
+	padding-bottom: 100px
+}
+
+.course-online-list{
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.course-online-item{
+    width: 33%;
+}
+
+.course-online-item-link{
+    color: black;
+}
+
+.course-online-item-link:hover{
+    text-decoration: none;
+    color: #757575;
+}
+
+.course-online-item-link img{
+    width: 256px;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+    overflow: hidden;
+}
+
+.course-online-item-content{
+    margin-top: 6px;
+}
+
+.course-online-intro{
+    display: block;
+    color: var(--online-course-color);
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.course-online-name{
+
+}
+
+.course-online-intro-desc{
+    color: #757575;
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: 6px;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.course-online-teacher{
+    margin: 0;
+}
+
+.course-online-price{
+    display: flex;
+    margin-top: 10px;
+    
+}
+
+.course-online-price-new{
+    color: var(--primary-color);
+    font-size: 20px;
+    font-weight: 500;
+    margin-right: 10px;
+    
+}
+
+.course-online-price-old{
+    color: #757575;
+    text-decoration: line-through;
+}
+
+.course-online-pages-list{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style-type: none;
+    margin-top: 10px;
+}
+
+.course-online-page-item{
+    margin: 0 8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+}
+
+.page-active{
+    background-color: var(--online-course-color);
+}
+
+.course-online-page-item a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    color: black;
+    text-decoration: none;
+}
+
+.course-online-page-item a:hover{
+    background-color: #ccc;
+}
+
+/* Chi tiết KH */
+.course-detail{
+    margin-top: 40px;
+}
+
+.course-detail-img{
+    
+}
+
+.course-detail-info{
+
+}
+
+.course-detail-price{
+
+}
+
+.course-detail-price-old{
+    color: #757575;
+    text-decoration: line-through;
+    font-size: 14px;
+}
+
+.course-detail-price-new{
+    font-size: 20px;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.course-detail-desc{
+
+}
+
+.course-detail-selection{
+    display: flex;
+}
+
+.course-detail-buy-btn{
+    padding: 10px 20px;
+    margin-right: 20px;
+}
+
+.course-detail-add-money{
+    padding: 10px 20px;
+}

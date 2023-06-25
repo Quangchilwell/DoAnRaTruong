@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Cập nhật khóa học Online</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Cập nhật khóa học Online</h2>
+		<form id="form-validation" action="/admin/update-online-course" 
+			method="post" th:object="${courseDTO}" enctype="multipart/form-data">
+		
+			<input th:field="*{id}" type="hidden"/>
+			<div class="form-group">
+				<label for="name">Khóa học</label> <input 
+					type="text" th:field="*{name}" class="form-control" placeholder="Nhập tên khóa học"/>
+			</div>
+			
+			<div class="form-group">
+				<label for="">Ảnh giới thiệu cũ</label> 
+				<img style="width: 200px" alt="" th:src="@{/image/imgCourses/__${courseDTO.image}__}">
+			</div>
+			
+			<div class="form-group">
+				<label for="name">Ảnh giới thiệu mới</label> <input 
+					type="file" th:field="*{file}" class="form-control"/>
+			</div>
+			
+			<div class="form-group">
+	        	<label for="" class="form-label">Loại khóa học</label>
+	        	<select th:field="*{idCourseType}" class="form-control">
+	        		<option th:text="${type.name}" th:value="${type.id}"></option>
+	        		<option th:each="type: ${types}" th:text="${type.name}" 
+	        			th:value="${type.id}" />
+	        	</select>
+        	</div>
+        	
+        	<div class="form-group">
+	        	<label for="" class="form-label">Mã giảm giá (nếu có)</label>
+	        	<select th:field="*{idDiscount}" class="form-control">
+	        		<option th:if="${discount != null}" th:text="${discount.name}" th:value="discount.id">
+	        		<option th:value="0">Lựa chọn</option>
+	        		<option th:each="code: ${discountDTOs}" th:text="${code.name}" 
+	        			th:value="${code.id}" />
+	        	</select>
+        	</div>
+        	     	
+        	<div class="form-group">
+				<label for="name">Học phí</label> <input 
+					type="number" th:field="*{price}" class="form-control" placeholder="Nhập giá khóa học"/>
+			</div>
+			
+			
+			<div class="form-group">
+				<label>Mô tả</label>
+				<textarea th:field="*{description}" type="text" class="form-control"></textarea>
+			</div>
+			
+			<button type="submit" class="btn btn-default">Cập nhật</button>
+			<a class="btn btn-primary" th:href="@{/admin/online-course-list}">Danh
+				sách khóa học Online</a>
+		</form>
+	</div>
+
+	
+</body>
+</html>

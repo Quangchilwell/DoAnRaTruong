@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Danh sách mã giảm giá</title>
+<link rel="stylesheet" href="">
+</head>
+
+<body>
+	<header th:replace="common/headerAdminOnlCourse :: headerAdminOnlCourse"></header>
+	<div class="container">
+		<h2>Danh sách chi tiết nạp tiền</h2>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Mã tài khoản nạp</th>
+					<th>Số tiền nạp</th>
+					<th>Ngày nạp tiền</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="money: ${addMoneys}">
+					<td th:text="${money.id}"></td>
+					<td th:text="${money.accountStudentDTO.id}"></td>
+					<td>
+						<span th:text="${#numbers.formatDecimal(money.money, 0, 'COMMA', 0, 'POINT')}">
+							1,145,000
+						</span> VNĐ
+					</td>
+					<td th:text="${money.createdAt}"></td>
+					<td>
+						<a th:href="@{/admin/info-detail-add-money/__${money.id}__}">Thông tin</a>
+					</td>
+
+				</tr>
+			</tbody>
+		</table>
+		
+	</div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<nav th:fragment="headerAdminOnlCourse" class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">WebSiteName</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class=""><a th:href="@{/admin/course-list}">Quản lí khóa offline</a></li>
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="">Quản lí
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+        	<li> <a th:href="@{/admin/online-course-list}">Khóa học online</a> </li>
+        	<li> <a th:href="@{/admin/invoices-online-course-list}">Các hóa đơn thanh toán</a> </li>
+        	<li> <a th:href="@{/admin/online-course-list}">Thông tin kích hoạt các khóa học</a> </li>
+        	<li> <a th:href="@{/admin/add-money-list}">Thông tin nạp tiền</a> </li>
+        </ul>
+       </li>
+       
+       <li class=""><a th:href="@{/tvv/future-student-list}">Danh sách đăng kí trên web</a></li>
+    </ul>
+  </li>
+</nav>

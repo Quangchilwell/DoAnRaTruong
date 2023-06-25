@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/website :: website(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Anh ngữ Minh Quang</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<header th:replace="common/header :: header"></header>
+	
+	<div class="container">
+		<h1>Khóa học của tôi</h1>
+		
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Khóa học</th>
+					<th>Ngày kích hoạt</th>
+					<th>Lựa chọn</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="course: ${dtos}">
+					<td th:text="${course.id}"></td>
+					<td th:text="${course.onlineCourseDTO.courseDTO.name}"></td>
+					<td> <span th:text="${course.activationDate}"></span></td>
+					<td>
+						<a href="">Vào học</a> |
+						<a href="">Thông tin khóa học</a>
+					</td>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

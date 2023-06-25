@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Thông tin hình thức học</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Chi tiết hình thức học</h2>
+		<div class="table-responsive">
+			<table class="table">
+				<tr>
+					<th>ID</th>
+					<td th:text="${form.id}"></td>
+				</tr>
+				
+				<tr>
+					<th>Hình thức dạy</th>
+					<td th:text="${form.name}"></td>
+				</tr>
+				
+				<tr>
+					<th>Mô tả</th>
+					<td th:text="${form.description}"></td>
+				</tr>
+				
+				<tr>
+					<th>Ngày tạo</th>
+					<td th:text="${#dates.format(form.createdDate, 'dd-MM-yyyy HH:mm')}"></td>
+				</tr>
+				
+				<tr>
+					<th>Ngày cập nhật gần nhất</th>
+					<td th:text="${#dates.format(form.updatedDate, 'dd-MM-yyyy HH:mm')}"></td>
+				</tr>
+				
+			</table>
+		</div>
+		<a class="btn btn-primary" th:href="@{/admin/teaching-form-list}">Danh sách hình thức học</a>
+	</div>
+</body>
+</html>

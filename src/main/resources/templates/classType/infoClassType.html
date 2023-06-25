@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Thông tin loại phòng</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Chi tiết loại phòng</h2>
+		<div class="table-responsive">
+			<table class="table">
+				<tr>
+					<th>Mã loại phòng</th>
+					<td th:text="${type.id}"></td>
+				</tr>
+				
+				<tr>
+					<th>Tên loại phòng</th>
+					<td th:text="${type.name}"></td>
+				</tr>
+				
+				<tr>
+					<th>Tổng số bàn trong phòng</th>
+					<td th:text="${type.quantityTables}"></td>
+				</tr>
+				
+				<tr>
+					<th>Tổng số ghế trong phòng</th>
+					<td th:text="${type.quantityChairs}"></td>
+				</tr>
+				
+				<tr>
+					<th>Ngày tạo</th>
+					<td th:text="${type.createdDate}"></td>
+				</tr>
+				
+				<tr>
+					<th>Ngày cập nhật gần nhất</th>
+					<td th:text="${type.updatedDate}"></td>
+				</tr>
+				
+				<tr>
+					<th>Ghi chú</th>
+					<td th:text="${type.note}"></td>
+				</tr>
+			</table>
+		</div>
+		<a class="btn btn-primary" th:href="@{/admin/class-type-list}">Danh sách loại phòng</a>
+	</div>
+</body>
+</html>

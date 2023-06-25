@@ -1,0 +1,45 @@
+<nav th:fragment="headerAdmin" class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">WebSiteName</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="">Quản lí
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+        	<li><a th:href="@{/admin/teaching-form-list}">Hình thức dạy</a></li>
+        	<li><a th:href="@{/admin/course-type-list}">Loại khóa học</a></li>
+         	<li><a th:href="@{/admin/course-list}">Khóa học</a></li>
+         	<li><a th:href="@{/admin/teacher-list}">Giáo viên</a></li>
+         	<li><a th:href="@{/admin/student-list}">Học viên</a></li>
+         	<li><a th:href="@{/admin/class-room-list}">Phòng học</a></li>
+         	<li><a th:href="@{/admin/class-type-list}">Loại phòng học</a></li>
+         	<li><a th:href="@{/admin/combo-list}">Danh sách combo</a></li>
+         	<li><a th:href="@{/admin/invoice-list}">Danh sách hóa đơn</a></li>
+         	<li><a th:href="@{/admin/class-list}">Danh sách lớp học</a></li>
+        </ul>
+      </li>
+ 
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Lịch học
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+        	<li>
+        		<a th:href="@{/admin/classes-today}">Lịch học hôm nay</a>
+        		<a th:href="@{/admin/check-classes-in-date}">Lịch học các ngày khác</a>
+        	</li>
+        </ul>
+      </li>
+      
+      <li><a th:href="@{/tvv/register-course-list}">Danh sách đăng kí học</a></li>
+      
+      <li><a th:href="@{/admin/open-schedule-class(idCourse=0)}">Mở lớp dự kiến</a></li>
+      
+      <li><a th:href="@{/admin/time-table}">Thời khóa biểu</a></li>
+      
+       <li><a th:href="@{/admin/online-course-list}">Quản lí khóa học online</a></li>
+    </ul>
+  </li>
+</nav>

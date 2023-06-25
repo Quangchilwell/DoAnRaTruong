@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Thêm mới loại khóa học</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Thêm mới học viên</h2>
+		<form id="form-validation" th:action="@{/admin/add-student}" 
+			method="post" th:object="${studentDTO}">
+		
+			<div class="form-group">
+				<label>Họ tên</label>
+				<input th:field="*{name}" type="text" class="form-control"></input>
+				<p style="color: red;" th:each="error: ${#fields.errors('name')}"
+					th:text="#{validation.require}"></p>
+			</div>
+		
+			<div class="form-group">
+				<label>Ngày sinh</label>
+				<input th:field="*{birthday}" type="date" class="form-control"></input>
+			</div>
+			
+			<div class="form-group">
+	        	<label for="gender" class="form-label">Giới tính</label>
+	        	<select th:field="*{gender}" class="form-control">
+	        		<option value="male">Nam</option>
+	        		<option value="female">Nữ</option>
+	        	</select>
+        	</div>
+        	
+        	<div class="form-group">
+				<label for="phone">Số điện thoại</label> <input 
+					type="tel" th:field="*{phone}" class="form-control" placeholder="Nhập đúng SĐT"/>
+				<p style="color: red;" th:each="error: ${#fields.errors('phone')}"
+					th:text="#{validation.require}"></p>
+			</div>
+			
+			<div class="form-group">
+				<label for="">Nghề nghiệp hiện tại</label>
+				<div class="radio">
+				  <label><input type="radio" th:field="*{career}" value="Học sinh">Học sinh</label>
+				</div>
+				<div class="radio">
+				  <label><input type="radio" th:field="*{career}" value="Sinh viên">Sinh viên</label>
+				</div>
+				<div class="radio">
+				  <label><input type="radio" th:field="*{career}" value="Đang đi làm">Đang đi làm</label>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="">Địa chỉ nơi ở</label> <input 
+					type="text" th:field="*{address}" class="form-control" placeholder="Nhập nơi ở"/>
+			</div>
+			
+			<div class="form-group">
+				<label for="">Nơi làm việc hiện tại</label> <input 
+					type="text" th:field="*{workPlace}" class="form-control" placeholder="Nhập nơi làm việc"/>
+			</div>
+			
+			
+			<div class="form-group">
+				<label>Ghi chú</label>
+				<textarea th:field="*{note}" type="text" class="form-control"></textarea>
+			</div>
+			
+			<button type="submit" class="btn btn-default">Thêm mới</button>
+			<a class="btn btn-primary" th:href="@{/admin/student-list}">Danh
+				sách học viên</a>
+		</form>
+	</div>
+
+	
+</body>
+</html>

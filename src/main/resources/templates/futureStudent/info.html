@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Chi tiết người đăng kí</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<header th:replace="common/headerAdminOnlCourse :: headerAdminOnlCourse"></header>
+	<div class="container">
+		<h2>Chi tiết người đăng kí</h2>
+		<div class="table-responsive">
+			<table class="table">
+				<tr>
+					<th>ID</th>
+					<td th:text="${student.id}"></td>
+				</tr>
+				
+				<tr>
+					<th>Họ tên</th>
+					<td th:text="${student.name}"></td>
+				</tr>
+				
+				<tr>
+					<th>Số điện thoại</th>
+					<td th:text="${student.phone}"></td>
+				</tr>
+				
+				<tr>
+					<th>Email</th>
+					<td th:text="${student.email}"></td>
+				</tr>
+				
+				<tr>
+					<th>Nguyện vọng</th>
+					<td th:text="${student.aspiration}"></td>
+				</tr>
+				
+				<tr>
+					<th>Tình trạng</th>
+					<td th:if="${student.status == 0}">Chưa lên lịch hẹn</td>
+					<td th:if="${student.status == 1}">Đã lên lịch hẹn</td>
+				</tr>
+				
+				<tr th:if="${student.schedule != null}">
+					<th>Ngày hẹn</th>
+					<td th:text="${student.schedule}"></td>
+				</tr>
+			
+				<tr>
+					<th>Ngày đăng kí</th>
+					<td th:text="${student.createdDate}"></td>
+				</tr>
+			</table>
+		</div>
+		<a class="btn btn-primary" th:href="@{/tvv/future-student-list}">Danh sách đăng kí trên web</a>
+		
+		<form th:if="${student.schedule  == null}" th:action="@{/tvv/open-appointment-schedule}" method="post">
+			<h3>Lên lịch hẹn</h3>
+				<input name="id"  th:value="${student.id}" type="hidden"/>
+				<div class="form-group">
+					<label>Chọn lịch hẹn</label> 
+					<input type="datetime-local" name="calendar" class="form-control" />
+			</div>
+				<button type="submit" class="btn btn-primary">Lên lịch hẹn</button>
+		</form>
+		
+	</div>
+</body>
+</html>

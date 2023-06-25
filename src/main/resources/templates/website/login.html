@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/website :: website(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Đăng nhập tài khoản</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	 <header class="header">
+            <div class="header-intro container">
+                <img class="header-logo" src="https://www.anhngumshoa.com/theme/frontend/default/images/logo2.png" alt="">
+
+                <h1>Đào tạo TOEIC số 1 Việt Nam</h1>
+
+                <div class="header-function">
+                    <form class="header-search">
+                        <input class="header-search-input" type="text" name="" placeholder="Tìm kiếm">
+                        <button class="header-search-btn">
+                            <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </form>
+
+                    <div class="header-login-logout">
+                        <a th:href="@{/mqe/register}" class="header-login-btn btn-login">Đăng ký</a>
+                        <a th:href="@{/mqe/login}" class="header-logout-btn btn-register">Đăng nhập</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-nav">
+                <ul class="header-nav-list container">
+                    <li class="header-nav-item">
+                        <a href=""><i class="fa-solid fa-house"></i></a>
+                    </li>
+                    <li class="header-nav-item">
+                        <a href="">Về chúng tôi</a>
+                    </li>
+                    <li class="header-nav-item">
+                        <a href="">Đội ngũ đào tạo</a>
+                    </li>
+                    <li class="header-nav-item">
+                        <a href="">Học viên</a>
+                    </li>
+                    <li class="header-nav-item">
+                        <a href="">Lịch khai giảng</a>
+                    </li>
+                    <li class="header-nav-item">
+                        <a href="">Khóa học</a>
+                    </li>
+                    <li class="header-nav-item">
+                        <a href="">Bài giảng</a>
+                    </li>
+                    <li class="header-nav-item">
+                        <a href="">Test online</a>
+                    </li>
+                    <li class="header-nav-item">
+                        <a href="">Bài tập lớn</a>
+                    </li>
+                </ul>
+            </div>
+        </header>
+
+        <div class="body-login">
+            <div class="body-login-wrapper container">
+                <form id="form-login" class="login-form" method="post">
+                    <h2>ĐĂNG NHẬP TÀI KHOẢN</h2>
+                     <p class="text-danger" th:if="${error != null}">Sai thông tin đăng nhập</p>
+                    <div class="form-group">
+                        <input name="email" type="text" class="form-input" placeholder="Email">
+                        <span class="text-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input name="password" type="text" class="form-input" placeholder="Mật khẩu">
+                        <span class="text-error"></span>
+                    </div>
+
+                    <button class="btn-submit-form btn-register" type="submit">Đăng nhập</button>
+                </form>
+                </div>
+            </div>
+        </div>
+        
+        <footer th:replace="common/footer :: footer"></footer>
+        
+        <script type="text/javascript" th:src="@{/js/formValidation.js}"></script>
+</body>
+</html>

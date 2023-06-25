@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Thêm mới loại phòng</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Thêm mới loại lớp học</h2>
+		<form id="form-validation" action="/admin/add-class-room" method="post" th:object="${classRoomDTO}">
+			<div class="form-group">
+				<label for="name">Tên phòng học</label> <input id="name"
+					type="text" th:field="*{name}" class="form-control" />
+				<p style="color: red;" th:each="error: ${#fields.errors('name')}"
+					th:text="#{validation.require}"></p>
+			</div>
+			
+			<div class="form-group">
+	        	<label for="" class="form-label">Loại phòng học</label>
+	        	<select th:field="*{idType}" class="form-control">
+	        		<option th:each="type: ${session.classTypes}" th:text="${type.name}" 
+	        			th:value="${type.id}" />
+	        	</select>
+        	</div>
+        	
+        	<div class="form-group">
+	        	<label for="" class="form-label">Tình trạng phòng</label>
+	        	<select th:field="*{status}" class="form-control">
+	        		<option value="0">Bình thường</option>
+	        		<option value="1">Sửa chữa</option>
+	        	</select>
+        	</div>
+
+			<button type="submit" class="btn btn-default">Thêm mới</button>
+			<a class="btn btn-primary" th:href="@{/admin/class-room-list}">Danh
+				sách phòng học</a>
+		</form>
+	</div>
+
+	
+</body>
+</html>

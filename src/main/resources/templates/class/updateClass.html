@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Cập nhật lớp học</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Cập nhật lớp học</h2>
+		<form action="/admin/update-class" method="post"
+			th:object="${class}">
+
+			<input type="hidden" th:field="*{id}">
+			<div class="form-group">
+				<label>Tên lớp học</label> <input th:field="*{name}" type="text"
+					class="form-control" placeholder="Tên lớp học">
+				<p style="color: red;" th:each="error: ${#fields.errors('name')}"
+					th:text="#{validation.require}"></p>
+			</div>
+
+			<div class="form-group">
+	        	<label for="" class="form-label">Giáo viên dạy lớp</label>
+	        	<select th:field="*{idTeacher}" class="form-control">
+	        		<option th:if="${class.teacherDTO != null}" th:text="${teacher.name}"
+	        			th:value="${teacher.id}"
+	        		></option>
+	        		<option th:each="teacher: ${teacherDTOs}" th:text="${teacher.name}" 
+	        			th:value="${teacher.id}" />
+	        	</select>
+        	</div>
+
+			<div class="form-group">
+	        	<label for="" class="form-label">Trợ giảng cho lớp</label>
+	        	<select th:field="*{idTutor}" class="form-control">
+	        		<option th:if="${class.tutorDTO != null}" th:text="${tutor.name}"
+	        			th:value="${tutor.id}"
+	        		></option>
+	        		<option th:each="tutorDTO: ${tutorDTOs}" th:text="${tutorDTO.name}" 
+	        			th:value="${tutorDTO.id}" />
+	        	</select>
+        	</div>
+			
+			<div class="form-group">
+	        	<label for="" class="form-label">Phòng học cho lớp</label>
+	        	<select th:field="*{idClassRoom}" class="form-control">
+	        		<option th:if="${class.classRoomDTO != null}" th:text="${classRoom.name}"
+	        			th:value="${classRoom.id}"
+	        		></option>
+	        		<option th:each="room: ${classRoomDTOs}" th:text="${room.name}" 
+	        			th:value="${room.id}" />
+	        	</select>
+        	</div>
+
+			<div class="form-group">
+				<label>Ghi chú</label>
+				<textarea th:field="*{note}" type="text" class="form-control"></textarea>
+			</div>
+
+			<button type="submit" class="btn btn-default">Cập nhật</button>
+			<a class="btn btn-primary" th:href="@{/admin/class-list}">Danh
+				sách lớp học</a>
+		</form>
+	</div>
+</body>
+</html>

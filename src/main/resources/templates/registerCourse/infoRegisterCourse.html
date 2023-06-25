@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Thông tin đăng kí khóa học</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Chi tiết đăng kí khóa học</h2>
+		<div class="table-responsive">
+			<table class="table">
+				<tr>
+					<th>Mã đăng kí</th>
+					<td th:text="${register.id}"></td>
+				</tr>
+				
+				<tr>
+					<th>Khóa học đăng kí</th>
+					<td th:text="${register.courseDTO.name}"></td>
+					<td><a class="" th:href="@{/admin/info-course/__${register.courseDTO.id}__}">Chi tiết khóa học</a></td>
+				</tr>
+				
+				<tr>
+					<th>Học viên đăng kí</th>
+					<td th:text="${register.studentDTO.name}"></td>
+					<td><a class="" th:href="@{/admin/info-student/__${register.studentDTO.id}__}">Chi tiết học viên</a></td>
+				</tr>
+				
+				<tr>
+					<th>Ngày đăng kí</th>
+					<td th:text="${#dates.format(register.registerDate, 'dd-MM-yyyy HH:mm')}"></td>
+				</tr>
+				
+				<tr>
+					<th>Ghi chú</th>
+					<td th:text="${register.note}"></td>
+				</tr>
+				
+				<tr>
+					<th>Ngày cập nhật gần nhất</th>
+					<td th:text="${#dates.format(register.updatedDate, 'dd-MM-yyyy HH:mm')}"></td>
+				</tr>
+				
+			</table>
+		</div>
+		<a class="btn btn-primary" th:href="@{/tvv/register-course-list}">Danh sách đăng kí</a>
+	</div>
+</body>
+</html>

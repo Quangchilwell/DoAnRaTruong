@@ -1,0 +1,714 @@
+@charset "UTF-8";
+.header{
+    /* min-width: 1140px;
+    max-width: 1200px;
+    margin: auto; */
+}
+
+.header-intro{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.header-logo{
+    width: 130px;
+}
+
+.logo-img{
+    width: 100%;
+}
+
+.header-contact-list{
+    display: flex;
+    list-style-type: none;
+    margin-top: 10px;
+}
+
+.header-contact-item{
+    display: flex;
+    align-items: center;
+    margin-right: 40px;
+    cursor: pointer;
+}
+
+.header-contact-item i{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #bebebeed;
+    color: white;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.header-contact-item span{
+    font-size: 14px;
+}
+
+.header-contact-item span:hover{
+    color: var(--primary-color);
+}
+
+.header-expand{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 500px;
+}
+
+.header-search{
+    border-radius: 6px;
+    padding: 4px;
+    padding-left: 8px;
+    border: 1px solid #ccc;
+}
+
+.header-search:focus{
+    outline: 1px solid var(--primary-color);
+}
+
+.header-btn-wrapper{
+    display: flex;
+}
+
+.header-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 40px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.btn-login{
+    background-color: #ffeaed;
+    color: var(--primary-color);
+}
+
+.btn-login:hover{
+    opacity: 0.9;
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+.btn-register{
+    background-color: #ec2229;
+    color: white;
+    font-size: 16px;
+    border-radius: 4px;
+}
+
+.btn-register:hover{
+    opacity: 0.9;
+    text-decoration: none;
+    color: white;
+}
+
+.header-logined{
+    display: flex;
+    align-items: center;
+}
+
+.welcome-user{
+    position: relative;
+    margin-right: 20px;
+    display: block;
+}
+
+.welcome-user::after{
+    content: "";
+    display: block;
+    position: absolute;
+    top: 18px;
+    right: 0;
+    width: 100%;
+    height: 30px;
+}
+
+.user-info-list{
+    position: absolute;
+    top: 36px;
+    left: 0;
+    padding: 10px 12px;
+    list-style-type: none;
+    width: 250px;
+    background-color: white;
+    box-shadow: 2px 2px 2px rgba(34,34,34,.7);
+    border-radius: 6px;
+    z-index: 3;
+    display: none;
+}
+
+.user-info-item{
+    margin-bottom: 6px;
+}
+
+.user-info-item a{
+    display: block;
+    color: black;
+    text-decoration: none;
+}
+
+.user-info-item a:hover{
+    color: var(--primary-color);
+}
+
+.welcome-user:hover{
+    cursor: pointer;
+    color: var(--primary-color);
+}
+
+.welcome-user:hover .user-info-list{
+    display: block;
+}
+
+/* HEADER NAVBAR */
+.header-navbar-list{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    list-style-type: none;
+    margin-top: 20px;
+
+}
+
+.header-navbar-item{
+    /* margin-right: 16px; */
+}
+
+.header-navbar-item a{
+    display: block;
+    width: 100%;
+    color: #333;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.header-navbar-item a:hover{
+    color: var(--primary-color);
+}
+
+/* Slider */
+.slider{
+    width: 100%;
+    /* margin-top: 60px; */
+}
+
+.slider-img{
+    width: 100%;
+    position: relative;
+}
+
+.slider-intro{
+    width: 100%;
+    position: absolute;
+    bottom: -5%;
+}
+
+.slider-intro h5{
+    margin-left: 12%;
+    margin-bottom: 16px;
+    font-size: 16px;
+}
+
+.slider-intro-contents-list{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slider-intro-content-item{
+    width: 340px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 30px;
+    border-radius: 10px;
+}
+
+.slider-intro-content-item img{
+    width: 96%;
+    height: 90%;
+}
+
+/* CONTENT */
+.content{
+    width: 100%;
+    margin-top: auto;
+}
+
+.intro-brand{
+    margin-top: 200px;
+    margin: 200px auto 0px auto;
+}
+.intro-brand-img{
+    width: 450px;
+} 
+
+.intro-brand-img img{
+    width: 100%;
+} 
+
+
+.intro-brand-content h2{
+    text-align: center;
+} 
+
+.intro-brand-contents-list{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    list-style-type: none;
+    margin-top: 20px;
+}
+
+.intro-brand-content-item{
+    width: 165px;
+    height: 90px;
+    /* flex-wrap: wrap; */
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.intro-brand-content-item h5{
+    color: red;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+/* Lộ trình tự học */
+.study-route-wrapper{
+    margin-top: 60px;
+    background-color: #fff3e4;
+    width: 100%;
+    padding-bottom: 100px;
+}
+
+.study-route{
+    width: 100%;
+    margin-top: 60px;
+}
+
+.study-route h2{
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.study-route-content{
+    display: flex;
+}
+
+.study-route-video-link{
+    display: block;
+    width: 600px;
+}
+
+.study-route-video-link img{
+    width: 100%;
+} 
+
+.study-route-content-detail{
+    width: 300px;
+    background-color: white;
+    padding: 20px 6px 20px 16px;
+}
+
+.study-route-content-detail h3{
+    font-weight: 700;
+    font-size: 26px;
+    margin-bottom: 16px;
+}
+
+.btn-study-route-video{
+    background-color: #e1f1f2;
+    color: rgba(34,34,34,.7);
+    border: none;
+    font-size: 16px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+}
+
+.study-route-sub-content{
+    font-size: 16px;
+    font-weight: 750;
+    line-height: 24px;
+    margin-top: 20px;
+}
+
+.study-route-sub-content-desc{
+    font-size: 14px;
+}
+
+.study-route-content-btn-wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.study-route-content-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    padding: 6px 0;
+    border-radius: 6px;
+}
+
+.study-route-content-btn:hover{
+    text-decoration: none;
+    opacity: 0.8;
+}
+
+.study-route-content-btn-wrapper .btn-online{
+    background-color: #e1f1f2;
+}
+
+.study-route-content-btn-wrapper .btn-doc{
+    background-color: #ec2229;
+    color: white;
+}
+
+/* Lộ trình đào tạo */
+.traning-route{
+    padding: 60px 0;
+} 
+
+.traning-route-header{
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.traning-route-body{
+    display: flex;
+    justify-content: center;
+}
+
+.traning-route-body-2{
+    text-align: center;
+    background-color: #ec2229;
+    color: white;
+    padding: 16px 0;
+    font-size: 18px;
+}
+
+.traning-route-body-4{
+    text-align: center;
+    background-color: #ccc;
+    padding: 16px 0;
+    font-size: 18px;
+    color: black;
+}
+
+.traning-route-body-img{
+    margin-top: 60px;
+    width: 100%;
+}
+
+.traning-route-body-img img{
+    width: 100%;
+}
+
+.traning-route-footer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.traning-route-discovery-link{
+    display: block;
+    color: black;
+    background-color: #e1f1f2;
+    padding: 10px 60px;
+}
+
+.traning-route-discovery-link:hover{
+    text-decoration: none;
+    opacity: 0.9;
+    color: black;
+}
+
+/* Đội ngũ giáo viên */
+.teacher-team{
+    background-color: #ffeaed;
+    padding: 60px 0;
+}
+
+.teacher-team-header{
+    text-align: center;
+}
+
+.teacher-team-header h3{
+}
+
+.teacher-team-header-slogans{
+    margin-top: 40px;
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.teacher-team-header-slogan-item{
+    display: flex;
+    align-items: center;
+}
+
+.teacher-team-header-slogan-item img{
+    display: block;
+    margin-right: 6px;
+    width: 30px;
+}
+
+.teacher-team-header-slogan-item span{
+    display: block;
+    font-size: 18px;
+}
+
+.teacher-team-list{
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+    margin-top: 30px;
+}
+
+.teacher-team-item{
+    width: 25%;
+}
+
+.teacher-team-item-link{
+    display: block;
+}
+
+.teacher-team-item-link img{
+    width: 80%;
+    display: block;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.teacher-team-item-link h4{
+    color: black;
+} 
+
+.teacher-team-item-link ul{
+    list-style-type: none;
+}
+
+.teacher-team-item-link ul li{
+    display: block;
+    color: #333;
+    padding-right: 28px;
+}
+
+.teacher-team-item-link:hover{
+    text-decoration: none;
+}
+
+.teacher-team-item-link img:hover{
+    opacity: 0.9;
+}
+
+.teacher-team-item-link h4:hover{
+    color: #ec2229;
+}
+
+.teacher-team-item-link ul li div{
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #333;
+}
+
+.teacher-team-footer{
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.teacher-team-footer a{
+    display: block;
+    background-color: #ec2229;
+    color: white;
+    padding: 10px 30px;
+}
+
+.teacher-team-footer a:hover{
+    background-color: #ccc;
+    color: black;
+    text-decoration: none;
+}
+
+/* Đăng kí */
+.reservation-wrapper{
+    margin-top: 100px;
+    background-color: #ec2229;
+}
+
+.reservation{
+    padding: 60px 0;
+    display: flex;
+}
+
+.reservation-form{
+    background-color: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 4px 4px 8px #333;
+}
+
+.reservation-form-body{
+
+}
+
+.reservation-form-input-wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    margin-bottom: 40px;
+}
+
+.form-group-1{
+    width: 48%;
+    height: 30px;
+}
+
+.form-group{
+}
+
+.form-input{
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+
+.reservation-form-input:focus{
+    outline: 1px solid #ec2229;
+}
+
+.reservation-form-recommend{
+    text-align: center;
+    margin-top: 30px;
+}
+
+.reservation-form-recommend h6{
+    margin: 0;
+    margin-bottom: 8px;
+}
+
+.reservation-form-recommend p{
+    margin: 0;
+    margin-bottom: 8px;
+}
+
+.btn-submit-form{
+    width: 100%;
+    margin-top: 20px;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #ec2229;
+    color: white;
+    font-size: 18px;
+}
+
+.reservation-advertise{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.reservation-advertise-img{
+    display: block;
+    width: 70%;
+}
+
+.reservation-advertise-img img{
+    width: 100%;
+}
+
+.reservation-advertise-gift{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.reservation-advertise-gift-item{
+    color: white;
+    font-size: 14px;
+}
+
+/* Nền tảng mạng xã hội */
+.social-network{
+    padding: 60px 0;
+}
+
+.social-network-header h2{
+    color: #ec2229;
+    font-weight: 780;
+}
+
+.social-network-list{
+    width: 100%;
+    margin-top: 20px;
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.social-network-item{
+    width: 28%;
+    height: 151px;
+}
+
+.social-network-item-link{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    background-color: #F5F5F5;
+    padding: 8px 10px;
+}
+
+.social-network-item-link:hover{
+    text-decoration: none;
+    background-color: #ccc;
+}
+
+.social-network-item-link i{
+    font-size: 24px;
+    color: #ec2229;
+    margin-right: 8px;
+}
+
+.social-network-item-link h5{
+    font-size: 24px;
+    color: black;
+}
+
+.social-network-intro{
+    padding-left: 37px;
+    margin-top: 8px;
+}
+
+

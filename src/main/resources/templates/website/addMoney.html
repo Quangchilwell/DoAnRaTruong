@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/website :: website(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Anh ngữ Minh Quang</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<header th:replace="common/header :: header"></header>
+	<div class="container">
+		<form id="form-validation" action="/mqe/add-money-for-your-account" 
+				method="post" th:object="${addMoneyDTO}">
+			<div class="form-group">
+				<label for="day">Nhập số tiền muốn nạp</label> <input
+					type="number" th:field="*{money}" class="form-control" />
+				<span class="form-message"></span>
+			</div>
+
+			<button type="submit" class="btn btn-default">Nạp tiền</button>
+			<a class="btn btn-primary" th:href="@{/mqe/home}">Trang chủ</a>
+		</form>
+	</div>
+
+</body>
+</html>

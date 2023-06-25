@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Thông tin lớp học</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Chi tiết lớp học</h2>
+		<div class="table-responsive">
+			<table class="table">
+				<tr>
+					<th>Mã lớp học</th>
+					<td th:text="${class.id}"></td>
+				</tr>
+				
+				<tr>
+					<th>Tên lớp học</th>
+					<td th:text="${class.name}"></td>
+				</tr>
+				
+				<tr>
+					<th>Khóa học</th>
+					<td th:if="${class.courseDTO != null}" th:text="${class.courseDTO.name}"></td>
+				</tr>
+				
+				<tr>
+					<th>Giáo viên dạy</th>
+					<td th:if="${class.teacherDTO != null}" th:text="${class.teacherDTO.name}"></td>
+					<td th:if="${class.teacherDTO == null}">Chưa sắp xếp</td>
+				</tr>
+				
+				<tr>
+					<th>Trợ giảng</th>
+					<td th:if="${class.tutorDTO != null}" th:text="${class.tutorDTO.name}"></td>
+					<td th:if="${class.tutorDTO == null}">Chưa sắp xếp</td>
+				</tr>
+				
+				<tr>
+					<th>Phòng học</th>
+					<td th:if="${class.classRoomDTO != null}" th:text="${class.classRoomDTO.name}"></td>
+					<td th:if="${class.classRoomDTO == null}">Chưa sắp xếp</td>
+				</tr>
+				
+				<tr>
+					<th>Ca học</th>
+					<td th:if="${class.shiftDTO != null}" th:text="${class.shiftDTO.name}"></td>
+					<td th:if="${class.shiftDTO == null}">Chưa sắp xếp</td>
+				</tr>
+				
+
+				<tr>
+					<th>Ngày mở lớp</th>
+					<td th:text="${class.openingDate}"></td>
+				</tr>
+				
+				<tr>
+					<th>Si sô lớp</th>
+					<td th:text="${class.quantityStudents}"></td>
+				</tr>
+				
+				<tr>
+					<th>Số buổi hoàn thành</th>
+					<td> <span th:text="${class.numberOfLessonsLearned}"></span> / 
+						<span th:text="${days}"></span> 
+					</td>
+				</tr>
+				
+				<tr>
+					<th>Tình trạng lớp học</th>
+					<td th:if="${class.status == -1}">Dự kiến mở</td>
+					<td th:if="${class.status == 0}">Đang học</td>
+					<td th:if="${class.status == 1}">Đã hoàn thành</td>
+				</tr>
+				
+				<tr>
+					<th>Ngày cập nhật gần nhất</th>
+					<td th:text="${class.updatedDate}"></td>
+				</tr>
+				
+				<tr>
+					<th>Ghi chú</th>
+					<td th:text="${class.note}"></td>
+				</tr>
+			</table>
+		</div>
+		<a class="btn btn-primary" th:href="@{/admin/students-in-class(idClass=${class.id})}">Danh sách học viên trong lớp</a>
+		
+		<a th:if="${class.shiftDTO == null}" class="btn btn-primary" 
+			th:href="@{/admin/add-shift-for-class(idClass=${class.id})}">Sắp xếp ca học</a>
+		<a th:if="${class.shiftDTO != null}" class="btn btn-primary" 
+			th:href="@{/admin/update-shift-for-class(idClass=${class.id})}">Đổi ca học</a>
+		
+		<a th:if="${class.shiftDTO != null && class.status != 0}" class="btn btn-primary" 
+			th:href="@{/admin/add-resources-for-class(idClass=${class.id})}">Sắp xếp lớp học</a>
+		<a class="btn btn-primary" th:href="@{/admin/class-list}">Danh sách lớp học</a>
+		
+		<a th:if="${class.teacherDTO != null && class.classRoomDTO != null && class.status == -1}"
+			class="btn btn-primary" 
+			th:href="@{/admin/accept-class/__${class.id}__}">Đưa vào hoạt động</a>
+			
+		<a th:if="${class.status == 0}"
+			class="btn btn-primary" 
+			th:href="@{/admin/confirm-complete-class/__${class.id}__}">Hoàn thành lớp học</a>
+			
+		<a class="btn btn-primary" 
+			th:href="@{/admin/lessons-in-class/__${class.id}__}">Chi tiết các buổi học</a>
+			
+		<h3 th:if="${details != null}">Các ngày học của lớp:
+			<span th:each="detail: ${details}"> Thứ <span th:text="${detail.dayOfWeekDTO.day}"></span> - </span>
+		</h3>
+	</div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Danh sách hình thức dạy</title>
+<link rel="stylesheet" href="">
+</head>
+
+<body>
+	<header th:replace="common/headerAdmin :: headerAdmin"></header>
+	<div class="container">
+		<h2>Danh sách hình thức dạy</h2>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Hình thức dạy</th>
+					<th>Ngày tạo</th>
+					<th>Lựa chọn</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="form: ${forms}">
+					<td th:text="${form.id}"></td>
+					<td th:text="${form.name}"></td>
+					<td th:text="${#dates.format(form.createdDate, 'dd-MM-yyyy HH:mm')}"></td>
+				
+					<td>
+						<a th:href="@{/admin/update-teaching-form/__${form.id}__}">Sửa</a> |
+						<a th:href="@{/admin/info-teaching-form/__${form.id}__}">Thông tin</a>
+					</td>
+
+				</tr>
+			</tbody>
+		</table>
+		<a class="btn btn-primary" th:href="@{/admin/add-teaching-form}">Thêm
+			mới</a>
+	</div>
+</body>
+</html>

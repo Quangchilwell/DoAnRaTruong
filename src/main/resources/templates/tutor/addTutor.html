@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Thêm mới trợ giảng</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Thêm mới trợ giảng</h2>
+		<form id="form-validation" action="/admin/add-tutor" method="post" th:object="${tutorDTO}">
+		
+			<div class="form-group">
+				<label for="name">Họ tên trợ giảng</label> <input 
+					type="text" th:field="*{name}" class="form-control" placeholder="Nhập tên trợ giảng"/>
+				<p style="color: red;" th:each="error: ${#fields.errors('name')}"
+					th:text="#{validation.require}"></p>
+			</div>
+			
+			<div class="form-group">
+	        	<label for="gender" class="form-label">Giới tính</label>
+	        	<select th:field="*{gender}" class="form-control">
+	        		<option value="male">Nam</option>
+	        		<option value="female">Nữ</option>
+	        	</select>
+        	</div>
+        	
+        	<div class="form-group">
+				<label for="birthday">Ngày sinh</label> <input
+					type="date" th:field="*{birthDay}" class="form-control" />
+				<p style="color: red;" th:each="error: ${#fields.errors('birthDay')}"
+					th:text="#{validation.require}"></p>
+			</div>
+			
+			<div class="form-group">
+				<label for="name">Trình độ học vấn</label> <input 
+					type="text" th:field="*{degree}" class="form-control" placeholder="VD: Tốt nghiệp đại học"/>
+				<p style="color: red;" th:each="error: ${#fields.errors('degree')}"
+					th:text="#{validation.require}"></p>
+			</div>
+		
+			<div class="form-group">
+				<label for="phone">Số điện thoại</label> <input 
+					type="tel" th:field="*{phone}" class="form-control" placeholder="Nhập đúng SĐT"/>
+				<p style="color: red;" th:each="error: ${#fields.errors('phone')}"
+					th:text="#{validation.require}"></p>
+			</div>
+			
+			<div class="form-group">
+				<label for="phone">Email</label> <input 
+					type="email" th:field="*{email}" class="form-control" placeholder="Nhập đúng Email"/>
+				<p style="color: red;" th:each="error: ${#fields.errors('email')}"
+					th:text="#{validation.require}"></p>
+			</div>
+			
+			<div class="form-group">
+				<label for="dateOfJoining">Ngày vào trung tâm</label> <input 
+					type="date" th:field="*{joiningDate}" class="form-control" />
+				<p style="color: red;" th:each="error: ${#fields.errors('joiningDate')}"
+					th:text="#{validation.require}"></p>
+			</div>
+			
+			<div class="form-group">
+				<label>Mô tả trợ giảng</label>
+				<textarea th:field="*{description}" type="text" class="form-control"></textarea>
+			</div>
+			
+			<button type="submit" class="btn btn-default">Thêm mới</button>
+			<a class="btn btn-primary" th:href="@{/admin/tutor-list}">Danh
+				sách trợ giảng</a>
+		</form>
+	</div>
+
+	
+</body>
+</html>

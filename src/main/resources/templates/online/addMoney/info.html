@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Thông tin hóa đơn</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<header th:replace="common/headerAdminOnlCourse :: headerAdminOnlCourse"></header>
+	<div class="container">
+		<h2>Thông tin nạp tiền</h2>
+		<div class="table-responsive">
+			<table class="table">
+				<tr>
+					<th>Mã nạp</th>
+					<td th:text="${money.id}"></td>
+				</tr>
+				
+				<tr>
+					<th>Mã tài khoản nạp</th>
+					<td th:text="${money.accountStudentDTO.id}"></td>
+				</tr>
+				
+				<tr>
+					<th>Người nạp</th>
+					<td th:text="${money.accountStudentDTO.name}"></td>
+				</tr>
+				
+				<tr>
+					<th>Ngày nạp</th>
+					<td th:text="${money.createdAt}"></td>
+				</tr>
+				
+				<tr>
+					<th>Số tiền nạp</th>
+					<td>
+						<span th:text="${#numbers.formatDecimal(money.money, 0, 'COMMA', 0, 'POINT')}">
+							1,145,000
+						</span> VNĐ
+					</td>
+				</tr>
+				
+			</table>
+		</div>
+		<a class="btn btn-primary" th:href="@{/admin/add-money-list}">Danh sách nạp tiền</a>
+		
+	</div>
+</body>
+</html>

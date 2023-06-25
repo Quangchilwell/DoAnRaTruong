@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Danh sách Combo</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<header th:replace="common/headerAdmin :: headerAdmin"></header>
+	<div class="container">
+		<h2>Đăng kí theo combo</h2>
+
+		<table class="table">
+			<tr>
+				<th>ID</th>
+				<td th:text="${student.id}"></td>
+			</tr>
+
+			<tr>
+				<th>Họ tên học viên</th>
+				<td th:text="${student.name}"></td>
+			</tr>
+		</table>
+
+		<h3>Danh sách Combo</h3>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Mã Combo</th>
+					<th>Tên Combo</th>
+					<th>Phần trăm giảm giá</th>
+					<th>Tổng giá</th>
+					<th>Lựa chọn</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="combo: ${combos}">
+					<td th:text="${combo.id}"></td>
+					<td th:text="${combo.name}"></td>
+					<td><span th:text="${combo.discount}"></span> %</td>
+					<td><span
+						th:text="${#numbers.formatDecimal(combo.totalPrice, 0, 'COMMA', 0, 'POINT')}">
+							1,145,000 </span> VNĐ</td>
+					<td>
+						<a th:href="@{/admin/info-combo/__${combo.id}__}">Thông tin</a> |
+						<a th:href="@{/tvv/comfirm-register-combo(idCombo = ${combo.id}, idStudent = ${student.id})}">Chọn đăng kí</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

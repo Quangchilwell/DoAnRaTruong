@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Danh sách giáo viên</title>
+<link rel="stylesheet" href="">
+<style>
+.expand {
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+</style>
+</head>
+<body>
+	<header th:replace="common/headerAdmin :: headerAdmin"></header>
+	<div class="container">
+		<h2>Thời khóa biểu hiện tại</h2>
+		<div th:if="${classes == null}">
+			<h4 style="color: red; font-size: 20px"  >Hiện không có lớp nào hoạt động</h4>
+		</div>
+		<div style="display: flex;" class="table-wrapper">
+			<table class="table table-bordered" th:each="day: ${dayOfWeeks}">
+				<tr style="color: red;"> <th>Thứ <span th:text="${day.day}"></span></th> </tr>
+				
+				<tr th:each="class: ${classes}">
+					<td th:if="${class.dayOfWeekDTO.day == day.day}" >
+						<span th:text="${class.classOpeningDTO.name}"></span>-
+						<span th:text="${class.classOpeningDTO.shiftDTO.name}"></span>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+</body>
+</html>

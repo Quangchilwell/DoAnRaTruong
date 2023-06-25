@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Sắp xếp ca học</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Sắp xếp lại ca học</h2>
+		<form id="form-validation" action="/admin/update-shift-for-class"
+			method="post" th:object="${classDTO}">
+			<input type="hidden" th:field="*{id}" />
+			
+			<div class="form-group">
+				<label for="" class="form-label">Ca học</label> <select
+					th:field="*{idShift}" class="form-control">
+					<option th:each="shift: ${shiftDTOs}" th:value="${shift.id}">
+						<span th:text="${shift.name}"></span> Từ <span
+							th:text="${shift.startedAt}"></span> đến <span
+							th:text="${shift.endedAt}"></span>
+					</option>
+				</select>
+			</div>
+
+			<label for="" class="form-label">Chọn buổi học</label>
+			<div th:each="day: ${days}" class="form-check">
+				<label class="form-check-label"> <input name="dayOfWeeks"
+					type="checkbox"
+					class="form-check-input" th:value="${day.id}">
+					Thứ <span th:text="${day.day}"></span>
+				</label>
+			</div>
+
+			<button type="submit" class="btn btn-default">Cập nhật</button>
+			<a class="btn btn-primary" th:href="@{/admin/class-list}">Danh
+				sách lớp học</a>
+		</form>
+	</div>
+
+
+</body>
+</html>

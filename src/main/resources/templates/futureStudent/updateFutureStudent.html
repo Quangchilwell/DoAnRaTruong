@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Cập nhật học viên tương lai</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Cập nhật học viên tương lai</h2>
+		<form id="form-validation" action="/tvv/update-future-student"
+			method="post" th:object="${futureStudentDTO}">
+			
+			<input type="hidden" th:field="*{id}"/>
+			<input type="hidden" th:field="*{status}"/>
+			
+			<div class="form-group">
+				<label for="day">Họ tên người đăng kí</label> <input type="text"
+					th:field="*{name}" class="form-control" />
+			</div>
+
+			<div class="form-group">
+				<label>Số điện thoại</label> <input type="tel" th:field="*{phone}"
+					class="form-control" />
+			</div>
+
+			<div class="form-group">
+				<label>Email</label> <input type="text" th:field="*{email}"
+					class="form-control" />
+			</div>
+
+			<div class="form-group">
+				<label>Nguyện vọng</label> <input type="text"
+					th:field="*{aspiration}" class="form-control" />
+			</div>
+			
+			<div th:if="${futureStudentDTO.schedule != null}" class="form-group">
+				<label>Lịch hẹn</label> <input type="datetime"
+					th:field="*{schedule}" class="form-control" />
+			</div>
+
+			<button type="submit" class="btn btn-default">Cập nhật</button>
+			<a class="btn btn-primary" th:href="@{/tvv/future-student-list}">Danh
+				sách đăng kí</a>
+		</form>
+	</div>
+
+
+</body>
+</html>

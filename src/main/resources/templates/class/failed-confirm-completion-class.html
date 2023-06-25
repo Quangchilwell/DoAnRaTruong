@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Không thể kết thúc lớp học</title>
+<link rel="stylesheet" href="">
+</head>
+<style type="text/css">
+
+	.wrapper{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+	}
+	
+	.btn-back-wrapper{
+		display: flex;
+		justify-content: center;
+	}
+	
+	.btn-back{
+		display: inline-block;
+		justify-content: center;
+		margin-top: 20px;
+		background: linear-gradient(96.31deg, #DB2927 -23.36%, #F37C25 98.83%);
+		color: white;
+		padding: 11px 37px;
+		font-size: 16px;
+		border-radius: 20px;
+	}
+	
+	.btn-back:hover {
+		color: white;
+		text-decoration: none;
+		opacity: 0.8;
+	}
+	
+	.content{
+		font-size: 20px;
+		color: #371753;
+	}
+		
+</style>
+
+<body>
+	<header th:replace="common/headerAdmin :: headerAdmin"></header>
+	<div class="container wrapper">
+		<h2>Chưa thể kết thúc lớp học <span th:text="${class.name}"></span> <h2>
+		
+		<p class="content">Hiện lớp học vẫn còn 
+			<span th:text="${studentsQuantity}"></span> học viên
+			chưa xác nhận qua / chưa qua
+		</p>
+		
+		<div class="btn-back-wrapper">
+			<a class="btn-back" th:href="@{#{class_completion} + ${idClass}}">Quay lại</a>		
+		</div>
+	</div>
+</body>
+</html>

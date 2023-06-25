@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Thông tin học sinh</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Chi tiết mã giảm giá</h2>
+		<div class="table-responsive">
+			<table class="table">
+				<tr>
+					<th>ID</th>
+					<td th:text="${code.id}"></td>
+				</tr>
+				
+				<tr>
+					<th>Tên mã giảm giá</th>
+					<td th:text="${code.name}"></td>
+				</tr>
+				
+				<tr>
+					<th>Phần trăm giảm</th>
+					<td th:text="${code.discountPercent}"></td>
+				</tr>
+				
+				<tr>
+					<th>Giá giảm</th>
+					<td th:text="${code.discountPrice}"></td>
+				</tr>
+					
+				<tr>
+					<th>Ngày tạo</th>
+					<td th:text="${#dates.format(code.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
+				</tr>
+				
+				<tr>
+					<th>Ngày cập nhật gần nhất</th>
+					<td th:text="${#dates.format(code.updatedAt, 'dd-MM-yyyy HH:mm')}"></td>
+				</tr>
+				
+			</table>
+		</div>
+		<a class="btn btn-primary" th:href="@{/admin/discount-code-list}">Danh sách mã giảm</a>
+		<a class="btn btn-primary" th:href="@{/admin/update-discount-code/__${code.id}__}">Sửa thông tin</a>
+			
+	</div>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Cập nhật khóa học</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<div class="container">
+		<h2>Cập nhật khóa học</h2>
+		<form id="form-validation" th:action="@{/admin/update-course}" 
+			method="post" th:object="${courseDTO}" enctype="multipart/form-data">
+			
+			<input type="hidden" th:field="*{id}"/>
+			
+			<div class="form-group">
+				<label for="name">Khóa học</label> <input
+					type="text" th:field="*{name}" class="form-control" placeholder="Nhập tên khóa học"/>
+				<p style="color: red;" th:each="error: ${#fields.errors('name')}"
+					th:text="#{validation.require}"></p>
+			</div>
+			
+			<div class="form-group">
+				<label for="">Ảnh giới thiệu cũ</label> 
+				<img style="width: 200px" alt="" th:src="@{/image/imgCourses/__${courseDTO.image}__}">
+			</div>
+			
+			<div class="form-group">
+				<label for="file">Ảnh giới thiệu mới</label> <input
+					type="file" th:field="*{file}" class="form-control" />			
+			</div>
+			
+			<div class="form-group">
+	        	<label for="" class="form-label">Loại khóa học</label>
+	        	<select th:field="*{idCourseType}" class="form-control">
+	        		<option th:if="${type != null}" th:text="${type.name}" th:value="${type.id}"/>
+	        		<option th:each="type: ${session.courseTypes}" th:text="${type.name}" 
+	        			th:value="${type.id}" />
+	        	</select>
+        	</div>
+        	
+        	<div class="form-group">
+	        	<label for="" class="form-label">Hình thức giảng dạy</label>
+	        	<select th:field="*{idTeachingForm}" class="form-control">
+	        		<option th:if="${form != null}" th:text="${form.name}" th:value="${form.id}"/>
+	        		<option th:each="form: ${session.teachingForms}" th:text="${form.name}" 
+	        			th:value="${form.id}" />
+	        	</select>
+        	</div>
+        	
+        	<div class="form-group">
+	        	<label for="" class="form-label">Trình độ</label>
+	        	<select th:field="*{level}" class="form-control">
+	        		<option th:value="Fundamentation">Cơ bản</option>
+	        		<option th:value="Enhancement">Nâng cao</option>
+	        		<option th:value="Master">Master</option>
+	        	</select>
+        	</div>
+        	
+        	<div class="form-group">
+				<label for="name">Học phí</label> <input id="name"
+					type="text" th:field="*{tuition}" class="form-control" placeholder="Nhập giá khóa học"/>
+				<p style="color: red;" th:each="error: ${#fields.errors('tuition')}"
+					th:text="#{validation.require}"></p>
+			</div>
+			
+			<div class="form-group">
+				<label for="name">Thời gian học</label> <input id="name"
+					type="text" th:field="*{studyTime}" class="form-control" placeholder="Nhập thời gian học"/>
+				<p style="color: red;" th:each="error: ${#fields.errors('studyTime')}"
+					th:text="#{validation.require}"></p>
+			</div>
+			
+			<div class="form-group">
+				<label>Mô tả</label>
+				<textarea th:field="*{description}" type="text" class="form-control"></textarea>
+			</div>
+			
+			<button type="submit" class="btn btn-default">Cập nhật</button>
+			<a class="btn btn-primary" th:href="@{/admin/course-list}">Danh
+				sách khóa học</a>
+		</form>
+	</div>
+
+	
+</body>
+</html>

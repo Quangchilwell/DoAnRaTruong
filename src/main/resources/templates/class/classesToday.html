@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Danh sách lớp học đang hoạt động</title>
+<link rel="stylesheet" href="">
+</head>
+
+<body>
+	<header th:replace="common/headerAdmin :: headerAdmin"></header>
+	<div class="container">
+		<h2>Danh sách lớp học có lịch ngày <span th:text="${today}"></span> </h2>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Mã lớp học</th>
+					<th>Tên lớp học</th>
+					<th>Giáo viên dạy</th>
+					<th>Lựa chọn</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr th:each="class: ${classes}">
+					<td th:text="${class.id}"></td>
+					<td th:text="${class.name}"></td>
+					<td th:text="${class.teacherDTO.name}"></td>
+					<td>
+						<td><a th:href="@{/admin/lesson-completed(idClass=${class.id}, date=${date} )}">Hoàn thành</a> |
+						<a th:href="@{/admin/postpone-class(idClass=${class.id}, date=${date} )}">Hoãn buổi học</a> |
+						<a th:href="@{/admin/info-class/__${class.id}__}">Thông tin</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<p style="text-align: center;" th:if="${classes.size() == 0}">
+			Không có lớp học nào có lịch hôm nay.
+			<a th:href="@{/admin/class-list}">Danh sách lớp học</a>				
+		</p>
+		
+		<a class="btn btn-primary" th:href="@{/admin/class-list}">Danh sách lớp học</a>
+		
+		
+	</div>
+</body>
+</html>
