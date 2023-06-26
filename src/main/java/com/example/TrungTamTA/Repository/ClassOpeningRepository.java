@@ -24,7 +24,7 @@ public interface ClassOpeningRepository extends JpaRepository<ClassOpening, Inte
 	@Query(value = "SELECT co \r\n"
 			+ "FROM ClassOpening co, ClassDetail cd\r\n"
 			+ "WHERE co.id = cd.idClassOpening AND co.idShift = ?1\r\n"
-			+ "AND co.id != ?2 \r\n"
+			+ "AND co.id != ?2 AND co.status != 1 \r\n"
 			+ "AND cd.idDayOfWeek IN (\r\n"
 			+ "	SELECT cd.idDayOfWeek \r\n"
 			+ "    FROM ClassDetail cd\r\n"

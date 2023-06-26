@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Xác nhận học lại</title>
+<link rel="stylesheet" href="">
+</head>
+
+<style>
+	.title-wrapper{
+		display: flex;
+		justify-content: center;
+		margin-bottom: 20px;
+	}
+	
+	.title{
+		display: block;
+		max-width: 600px;
+		text-align: center;
+	}
+	
+	.sub-title{
+		color: red;
+	}
+	
+	.options{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.btn-success{
+		margin-right: 10px
+	}
+</style>
+	
+<body>
+	<header th:replace="common/headerAdmin :: headerAdmin"></header>
+	<div class="container">
+		<div class="title-wrapper">
+			<h3 class="title"> 
+				Học viên <span class="sub-title" th:text="${student.name}"></span> không qua lớp học.
+				Vui lòng chọn hình thức học lại
+			 </h3>
+		</div>
+		 
+		 <div class="options">
+			 <a class="btn btn-success" 
+			 	th:href="@{/admin/student-do-not-complete-class/free/__${idRegister}__}">
+			 		Học lại miễn phí
+			 </a>
+			 <a class="btn btn-warning">Học lại mất phí</a>
+		 </div>
+	</div>
+</body>
+</html>

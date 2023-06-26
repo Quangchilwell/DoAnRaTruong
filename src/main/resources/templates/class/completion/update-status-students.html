@@ -28,7 +28,7 @@
 					
 					<td>
 						<a th:href="@{/admin/completed-class/student-passed-class/__${re.id}__}">Qua lớp</a> |
-						<a>Không qua lớp</a>
+						<a th:href="@{/admin/completed-class/student-do-not-complete-class/__${re.id}__}">Không qua lớp</a>
 					</td>
 
 				</tr>
@@ -36,7 +36,9 @@
 		</table>
 		
 		<div style="text-align: center;" th:if="${reDtos.size() == 0}">
-			<p>Đã cập nhật điều kiện cho tất cả các học sinh trong lớp.  <a>Xem chi tiết</a> </p>
+			<p>Đã cập nhật điều kiện cho tất cả các học sinh trong lớp.  
+				<a th:href="@{/admin/class-completion/class-detail/__${idClass}__}">Xem chi tiết</a> 
+			</p>
 		</div>
 	</div>
 </body>

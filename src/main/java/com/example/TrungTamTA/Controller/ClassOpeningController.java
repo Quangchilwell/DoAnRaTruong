@@ -412,6 +412,7 @@ public class ClassOpeningController {
 	@GetMapping("/update-status-students")
 	public String updateStatusStudents(Model model, @RequestParam("idClass") int idClass) {
 		List<RegisterCourseDTO> reDtos = registerCourseService.getByIdClassOpening(idClass);
+		model.addAttribute("idClass", idClass);
 		model.addAttribute("reDtos", reDtos);
 		return "class/completion/update-status-students";
 	}
@@ -447,11 +448,66 @@ public class ClassOpeningController {
 	}
 	
 	// Hoc vien khong qua lop
-	@PostMapping("/student-do-not-complete-class/{idRegister}")
+	@GetMapping("/completed-class/student-do-not-complete-class/{idRegister}")
 	public String studentDoNotCompleteClass(Model model, 
 			@PathVariable(name = "idRegister") int idRegister) {
+		// Lay thong tin dang ki
 		RegisterCourseDTO dto = registerCourseService.getByID(idRegister);
-		return "redỉrect:/admin/class-completion";
+		model.addAttribute("idRegister", idRegister);
+		model.addAttribute("student", dto.getStudentDTO());
+		return "class/completion/student-do-not-complete-class";
+	}
+	
+	// Hoc vien ko qua va duoc hoc lai mien phi
+	@GetMapping("/student-do-not-complete-class/free/{idRegister}")
+	public String free(Model model, 
+			@PathVariable(name = "idRegister") int idRegister) {
+		// Lay thong tin dang ki
+		RegisterCourseDTO reDto = registerCourseService.getByID(idRegister);
+		int idClass = reDto.getClassOpeningDTO().getId();
+		
+		// Luu thong tin hoc vien chua qua lop
+		StudentDetailInCompletedClassDTO stuInCompletedClassDTO = new StudentDetailInCompletedClassDTO();
+		stuInCompletedClassDTO.setClassOpeningDTO(reDto.getClassOpeningDTO());
+		stuInCompletedClassDTO.setStudentDTO(reDto.getStudentDTO());
+		stuInCompletedClassDTO.setIsPassed(1);
+		stuCompletedClassService.add(stuInCompletedClassDTO);		
+		
+		// Cap nhat lai dang ki ve chua co lop
+		reDto.setClassOpeningDTO(null);
+		registerCourseService.update(reDto);
+		
+		return "redirect:/admin/update-status-students?idClass=" + idClass;
+	}
+	
+//	@PostMapping("/student-do-not-complete-class/not-free/{idRegister}")
+//	public String notFree(Model model, 
+//			@PathVariable(name = "idRegister") int idRegister) {
+//		// Lay thong tin dang ki
+//		RegisterCourseDTO reDto = registerCourseService.getByID(idRegister);
+//		
+//		// Luu thong tin hoc vien chua qua lop
+//		StudentDetailInCompletedClassDTO stuInCompletedClassDTO = new StudentDetailInCompletedClassDTO();
+//		stuInCompletedClassDTO.setClassOpeningDTO(reDto.getClassOpeningDTO());
+//		stuInCompletedClassDTO.setStudentDTO(reDto.getStudentDTO());
+//		stuInCompletedClassDTO.setIsPassed(1);
+//		stuCompletedClassService.add(stuInCompletedClassDTO);		
+//		
+//		// Cap nhat lai dang ki ve chua co lop
+//		reDto.setClassOpeningDTO(null);
+//		registerCourseService.update(reDto);
+//		
+//		// Tao mot hoa don moi 
+//		
+//		
+//		return "redỉrect:/admin/class-completion";
+//	}
+	
+	@GetMapping("class-completion/class-detail/{idClass}")
+	public String classCompletionDetail(Model model, @PathVariable(name = "idClass") int idClass) {
+		model.addAttribute("students", stuCompletedClassService.getByIdClass(idClass));
+		model.addAttribute("class", service.getByID(idClass));
+		return "class/completion/class-detail";
 	}
 	
 }	

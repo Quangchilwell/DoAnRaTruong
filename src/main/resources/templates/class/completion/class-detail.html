@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Danh sách học viên trong lớp đã hoàn thành</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<header th:replace="common/headerAdmin :: headerAdmin"></header>
+	<div class="container">
+		<h2>Danh sách học viên trong lớp <span th:text="${class.name}"></span> đã hoàn thành</h2>
+		
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Mã học viên</th>
+					<th>Họ tên</th>
+					<th>Tình trạng</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="stu: ${students}">
+					<td th:text="${stu.studentDTO.id}"></td>
+					<td th:text="${stu.studentDTO.name}"></td>
+					
+					<td th:if="${stu.isPassed == 0}">Qua lớp</td>
+					<td th:if="${stu.isPassed == 1}">Không qua lớp</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
