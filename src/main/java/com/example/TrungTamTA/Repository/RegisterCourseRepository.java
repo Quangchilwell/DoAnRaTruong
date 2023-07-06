@@ -28,4 +28,10 @@ public interface RegisterCourseRepository extends JpaRepository<RegisterCourse, 
 			+ "FROM register_course AS rc\r\n"
 			+ "WHERE rc.id_course = ?1 AND rc.enable=\"Yes\"", nativeQuery = true)
 	public List<RegisterCourse> getRegistersCanOpenClass(int idCourse);
+	
+	@Query(value = "SELECT * FROM register_course as rc \r\n"
+			+ "WHERE rc.id_class_opening = ?1 AND rc.id_student NOT IN (\r\n"
+			+ "	SELECT da.id_student FROM draft_attendance as da \r\n"
+			+ ")", nativeQuery = true)
+	public List<RegisterCourse> getStudentsToCheckIn(int idCLass);
 }

@@ -32,4 +32,6 @@ public interface RegisterCourseService {
 	public void delete(int id);
 	
 	public RegisterCourseDTO getByID(int id);
+	
+	public List<RegisterCourseDTO> getStudentsToCheckIn(int idClass);
 }

@@ -20,14 +20,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.TrungTamTA.Constant.AttendanceStatus;
+import com.example.TrungTamTA.Constant.ClassCompletionStatus;
+import com.example.TrungTamTA.Constant.ClassStatus;
 import com.example.TrungTamTA.Dao.ClassDayDao;
 import com.example.TrungTamTA.Entity.ClassDay;
+import com.example.TrungTamTA.Entity.DraftAttendance;
+import com.example.TrungTamTA.Model.AttendanceDTO;
 import com.example.TrungTamTA.Model.ClassDayDTO;
 import com.example.TrungTamTA.Model.ClassDetailDTO;
 import com.example.TrungTamTA.Model.ClassOpeningDTO;
+import com.example.TrungTamTA.Model.RegisterCourseDTO;
+import com.example.TrungTamTA.Model.StudentDTO;
+import com.example.TrungTamTA.Repository.DraftAttendanceRepository;
+import com.example.TrungTamTA.Service.AttendanceService;
 import com.example.TrungTamTA.Service.ClassDayService;
 import com.example.TrungTamTA.Service.ClassDetailService;
 import com.example.TrungTamTA.Service.ClassOpeningService;
+import com.example.TrungTamTA.Service.RegisterCourseService;
+import com.example.TrungTamTA.Service.StudentService;
 
 @Controller
 @Transactional
@@ -45,6 +56,15 @@ public class ClassDayController {
 
 	@Autowired
 	ClassDetailService classDetailService;
+	
+	@Autowired
+	RegisterCourseService registerCourseService;
+	
+	@Autowired 
+	StudentService studentService;
+	
+	@Autowired AttendanceService attendanceService;
+	@Autowired DraftAttendanceRepository draftAttendanceRepository;
 
 	@GetMapping("/classes-today")
 	public String classesToday(Model model) {
@@ -52,7 +72,7 @@ public class ClassDayController {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		List<ClassOpeningDTO> dtos = new ArrayList<ClassOpeningDTO>();
 		List<ClassDetailDTO> classDetailDTOs = classDetailService.getAll();
-
+		
 		for (ClassDetailDTO classDetailDTO : classDetailDTOs) {
 			if (classDetailDTO.getDayOfWeekDTO().getDay() == localDate.getDayOfWeek().getValue() + 1
 					&& classDetailDTO.getClassOpeningDTO().getStatus() == 0) {
@@ -74,23 +94,99 @@ public class ClassDayController {
 	// HOAN THANH BUOI HOC
 	@GetMapping("/lesson-completed")
 	public String lessonCompleted(Model model, 
-			@RequestParam(name = "idClass") int idClass,
-			@RequestParam(name = "date") String date) {
+			@RequestParam(name = "idClass") int idClass) {
+		
 		ClassOpeningDTO classOpeningDTO = classOpeningService.getByID(idClass);
-		ClassDayDTO classDayDTO = new ClassDayDTO();
+		
+		// Danh sach hoc vien chua diem danh trong lop
+		List<RegisterCourseDTO> studentDTOs = registerCourseService.getStudentsToCheckIn(idClass);
+		
+		SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy");
+		
+		model.addAttribute("studentDTOs", studentDTOs);
+		model.addAttribute("class", classOpeningDTO);
+		model.addAttribute("date", formater.format(Date.valueOf(LocalDate.now())));
+		
+		return "class/student-attendance";
+	}
 	
+	// Điểm danh có đi học
+	@GetMapping("/classDay/student-attendance/present")
+	public String present(Model model, @RequestParam("idStudent") int idStudent,
+			@RequestParam("idClass") int idClass) {
+		
+		// Thêm mới điểm danh
+		AttendanceDTO attendanceDTO = new AttendanceDTO();
+		attendanceDTO.setClassDTO(classOpeningService.getByID(idClass));
+		attendanceDTO.setStudentDTO(studentService.getByID(idStudent));
+		attendanceDTO.setStatus(AttendanceStatus.PRESENT);
+		attendanceService.add(attendanceDTO);
+		
+		// Thêm mới bảng nháp điểm danh
+		DraftAttendance draftAttendance = new DraftAttendance();
+		draftAttendance.setIdStudent(idStudent);
+		draftAttendanceRepository.save(draftAttendance);
+		
+		return "redirect:/admin/lesson-completed?idClass=" + idClass;
+	}
+	
+	// Điểm danh không đi học
+	@GetMapping("/classDay/student-attendance/absent")
+	public String absesent(Model model, @RequestParam("idStudent") int idStudent,
+			@RequestParam("idClass") int idClass) {
+		
+		// Thêm mới điểm danh
+		AttendanceDTO attendanceDTO = new AttendanceDTO();
+		attendanceDTO.setClassDTO(classOpeningService.getByID(idClass));
+		attendanceDTO.setStudentDTO(studentService.getByID(idStudent));
+		attendanceDTO.setStatus(AttendanceStatus.ABSENT);
+		attendanceService.add(attendanceDTO);
+		
+		// Thêm mới bảng nháp điểm danh
+		DraftAttendance draftAttendance = new DraftAttendance();
+		draftAttendance.setIdStudent(idStudent);
+		draftAttendanceRepository.save(draftAttendance);
+		
+		return "redirect:/admin/lesson-completed?idClass=" + idClass;
+	}
+	
+	// Xác nhận hoàn thành buổi học
+	@GetMapping("/classDay/confirm-complete-lesson/{idClass}")
+	public String confirmCompleteLesson(@PathVariable("idClass") int idClass) {
+		
+		List<RegisterCourseDTO> studentsCheckIn = registerCourseService.getStudentsToCheckIn(idClass);
+		if(studentsCheckIn.size() > 0) {
+			return "";
+		}
+		
+		ClassOpeningDTO classOpeningDTO = classOpeningService.getByID(idClass);
+		
+		List<RegisterCourseDTO> studentDTOs = registerCourseService.getByIdClassOpening(idClass);
+		
+		// Xoa cac nhap diem danh
+		for(RegisterCourseDTO dto: studentDTOs) {
+			DraftAttendance draftAttendance = draftAttendanceRepository.findByidStudent(dto.getStudentDTO().getId());
+			draftAttendanceRepository.delete(draftAttendance);
+		}
+		
+		// Luu thong tin buoi hoc
+		ClassDayDTO classDayDTO = new ClassDayDTO();
 		classDayDTO.setClassOpeningDTO(classOpeningDTO);
-		classDayDTO.setDay(date);
-		classDayDTO.setStatus(1);
+		SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy");
+		classDayDTO.setDay(String.valueOf(LocalDate.now()));
+		classDayDTO.setStatus(ClassCompletionStatus.COMPLETE);
 		classDayDTO.setLesson(classOpeningDTO.getNumberOfLessonsLearned() + 1);
 		classDayDTO.setCompletedAt(Timestamp.valueOf(LocalDateTime.now()));
 		classDayService.add(classDayDTO);
 		
+		// Cap nhat so buoi hoc hoan thanh
 		classOpeningDTO.setNumberOfLessonsLearned(classOpeningDTO.getNumberOfLessonsLearned() + 1);		
 		if(classOpeningDTO.getCourseDTO().getStudyTime() * 8 == classOpeningDTO.getNumberOfLessonsLearned()) {
-			classOpeningDTO.setStatus(1);
+			classOpeningDTO.setStatus(ClassStatus.HOAN_THANH);
 		}
 		classOpeningService.update(classOpeningDTO);
+		
+		// Ve danh sach lop hoc hom nay
 		return "redirect:/admin/classes-today";
 	}
 	
