@@ -23,6 +23,9 @@ public class Attendance implements Serializable {
 
 	@Column(name="id_class")
 	private int idClass;
+	
+	@Column(name="id_lesson")
+	private int idLesson;
 
 	@Column(name="id_student")
 	private int idStudent;

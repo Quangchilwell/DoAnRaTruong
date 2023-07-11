@@ -9,9 +9,9 @@ import java.util.Date;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name="class_day")
+@Table(name="lesson")
 @Data
-public class ClassDay implements Serializable {
+public class Lesson implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -27,7 +27,8 @@ public class ClassDay implements Serializable {
 	@Column(name="id_class_opening")
 	private int idClassOpening;
 
-	private int lesson;
+	@Column(name = "lesson_number")
+	private int lessonNumber;
 
 	private int status;
 }

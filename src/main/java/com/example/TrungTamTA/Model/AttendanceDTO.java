@@ -10,6 +10,9 @@ public class AttendanceDTO {
 	private int idClass;
 	private ClassOpeningDTO classDTO;
 	
+	private int idLesson;
+	private LessonDTO lessonDTO;
+	
 	private int idStudent;
 	private StudentDTO studentDTO;
 	

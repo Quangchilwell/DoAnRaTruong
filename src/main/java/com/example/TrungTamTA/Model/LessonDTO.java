@@ -5,12 +5,12 @@ import java.sql.Timestamp;
 import lombok.Data;
 
 @Data
-public class ClassDayDTO {
+public class LessonDTO {
 	private int id;
 	private int idClassOpening;
 	private ClassOpeningDTO classOpeningDTO;
 	
-	private int lesson;
+	private int lessonNumber;
 	private int status;
 	private Timestamp completedAt;
 	private String day;

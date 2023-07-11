@@ -21,6 +21,7 @@
 					<th>Ca</th>
 					<th>Buổi học số</th>
 					<th>Thời gian hoàn thành</th>
+					<th>Lựa chọn</th>
 				</tr>
 			</thead>
 
@@ -30,6 +31,9 @@
 					<td th:text="${lesson.classOpeningDTO.shiftDTO.name}"></td>
 					<td th:text="${lesson.lesson}"></td>
 					<td th:text="${lesson.completedAt}"></td>
+					<td>
+						<a th:href="@{/admin/attendance/attentdance-by-lessons}">Danh sách điểm danh</a>
+					</td>
 				</tr>
 			</tbody>
 		</table>

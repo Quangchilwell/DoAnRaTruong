@@ -16,41 +16,40 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.TrungTamTA.Constant.AttendanceStatus;
 import com.example.TrungTamTA.Constant.ClassCompletionStatus;
 import com.example.TrungTamTA.Constant.ClassStatus;
-import com.example.TrungTamTA.Dao.ClassDayDao;
-import com.example.TrungTamTA.Entity.ClassDay;
+import com.example.TrungTamTA.Constant.LessonStatus;
 import com.example.TrungTamTA.Entity.DraftAttendance;
+import com.example.TrungTamTA.Entity.Lesson;
 import com.example.TrungTamTA.Model.AttendanceDTO;
-import com.example.TrungTamTA.Model.ClassDayDTO;
 import com.example.TrungTamTA.Model.ClassDetailDTO;
 import com.example.TrungTamTA.Model.ClassOpeningDTO;
+import com.example.TrungTamTA.Model.LessonDTO;
 import com.example.TrungTamTA.Model.RegisterCourseDTO;
-import com.example.TrungTamTA.Model.StudentDTO;
 import com.example.TrungTamTA.Repository.DraftAttendanceRepository;
+import com.example.TrungTamTA.Repository.LessonRepository;
 import com.example.TrungTamTA.Service.AttendanceService;
-import com.example.TrungTamTA.Service.ClassDayService;
 import com.example.TrungTamTA.Service.ClassDetailService;
 import com.example.TrungTamTA.Service.ClassOpeningService;
+import com.example.TrungTamTA.Service.LessonService;
 import com.example.TrungTamTA.Service.RegisterCourseService;
 import com.example.TrungTamTA.Service.StudentService;
+import com.example.TrungTamTA.Utils.DateUtils;
 
 @Controller
 @Transactional
 @RequestMapping("/admin")
-public class ClassDayController {
+public class LessonController {
 
 	@Autowired
-	ClassDayService classDayService;
+	LessonService lessonService;
 	
-	@Autowired
-	ClassDayDao dao;
-
+	@Autowired LessonRepository lessonRepository;
+	
 	@Autowired
 	ClassOpeningService classOpeningService;
 
@@ -76,9 +75,9 @@ public class ClassDayController {
 		for (ClassDetailDTO classDetailDTO : classDetailDTOs) {
 			if (classDetailDTO.getDayOfWeekDTO().getDay() == localDate.getDayOfWeek().getValue() + 1
 					&& classDetailDTO.getClassOpeningDTO().getStatus() == 0) {
-				ClassDay classDay = dao.checkClassCompleted(classDetailDTO.getClassOpeningDTO().getId(), 
-						Date.valueOf(localDate));
-				if(classDay == null) {
+				Lesson lesson = lessonRepository.checkClassCompleted(classDetailDTO.getClassOpeningDTO().getId(), 
+						Date.valueOf(localDate), LessonStatus.CHUA_HOAN_THANH);
+				if(lesson == null) {
 					dtos.add(classDetailDTO.getClassOpeningDTO());					
 				}
 				
@@ -94,18 +93,43 @@ public class ClassDayController {
 	// HOAN THANH BUOI HOC
 	@GetMapping("/lesson-completed")
 	public String lessonCompleted(Model model, 
-			@RequestParam(name = "idClass") int idClass) {
+			@RequestParam(name = "idClass") int idClass,
+			@RequestParam(name = "date", required = false) String dateToCheck) {
 		
 		ClassOpeningDTO classOpeningDTO = classOpeningService.getByID(idClass);
+		Date currentDate = Date.valueOf(dateToCheck);
 		
 		// Danh sach hoc vien chua diem danh trong lop
 		List<RegisterCourseDTO> studentDTOs = registerCourseService.getStudentsToCheckIn(idClass);
 		
-		SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy");
+		// Luu ban ghi lesson voi trang thai chua hoan thanh
+		if(currentDate != null) {
+			Lesson oldLesson = lessonRepository.findByidClassOpeningAndDay(idClass, currentDate);
+			
+			if(oldLesson == null) {
+				Lesson lesson = new Lesson();
+				lesson.setIdClassOpening(idClass);
+				lesson.setDay(currentDate);
+				lesson.setStatus(LessonStatus.CHUA_HOAN_THANH);
+				lesson.setLessonNumber(classOpeningDTO.getNumberOfLessonsLearned() + 1);
+				lesson.setCompletedAt(Timestamp.valueOf(LocalDateTime.now()));
+				lesson = lessonRepository.saveAndFlush(lesson);
+				
+				model.addAttribute("idLesson", lesson.getId());
+			} else {
+				model.addAttribute("idLesson", oldLesson.getId());
+			}
+		}
+						
 		
 		model.addAttribute("studentDTOs", studentDTOs);
 		model.addAttribute("class", classOpeningDTO);
-		model.addAttribute("date", formater.format(Date.valueOf(LocalDate.now())));
+		
+		if(currentDate != null) {
+			model.addAttribute("date", DateUtils.convertDateToDateOfVN(currentDate));			
+		} else {
+			model.addAttribute("date", DateUtils.convertDateToDateOfVN(LocalDate.now()));
+		}
 		
 		return "class/student-attendance";
 	}
@@ -113,7 +137,7 @@ public class ClassDayController {
 	// Điểm danh có đi học
 	@GetMapping("/classDay/student-attendance/present")
 	public String present(Model model, @RequestParam("idStudent") int idStudent,
-			@RequestParam("idClass") int idClass) {
+			@RequestParam("idClass") int idClass, @RequestParam("idLesson") int idLesson) {
 		
 		// Thêm mới điểm danh
 		AttendanceDTO attendanceDTO = new AttendanceDTO();
@@ -152,14 +176,17 @@ public class ClassDayController {
 	
 	// Xác nhận hoàn thành buổi học
 	@GetMapping("/classDay/confirm-complete-lesson/{idClass}")
-	public String confirmCompleteLesson(@PathVariable("idClass") int idClass) {
+	public String confirmCompleteLesson(Model model, @PathVariable("idClass") int idClass) {
+		
+		ClassOpeningDTO classOpeningDTO = classOpeningService.getByID(idClass);
 		
 		List<RegisterCourseDTO> studentsCheckIn = registerCourseService.getStudentsToCheckIn(idClass);
 		if(studentsCheckIn.size() > 0) {
-			return "";
+			model.addAttribute("quantityStudents", studentsCheckIn.size());
+			model.addAttribute("class", classOpeningDTO);
+			model.addAttribute("today", DateUtils.convertDateToDateOfVN(LocalDate.now()));
+			return "class/completion/class-can-not-be-completed";
 		}
-		
-		ClassOpeningDTO classOpeningDTO = classOpeningService.getByID(idClass);
 		
 		List<RegisterCourseDTO> studentDTOs = registerCourseService.getByIdClassOpening(idClass);
 		
@@ -170,14 +197,13 @@ public class ClassDayController {
 		}
 		
 		// Luu thong tin buoi hoc
-		ClassDayDTO classDayDTO = new ClassDayDTO();
+		LessonDTO classDayDTO = new LessonDTO();
 		classDayDTO.setClassOpeningDTO(classOpeningDTO);
-		SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy");
 		classDayDTO.setDay(String.valueOf(LocalDate.now()));
 		classDayDTO.setStatus(ClassCompletionStatus.COMPLETE);
-		classDayDTO.setLesson(classOpeningDTO.getNumberOfLessonsLearned() + 1);
+		classDayDTO.setLessonNumber(classOpeningDTO.getNumberOfLessonsLearned() + 1);
 		classDayDTO.setCompletedAt(Timestamp.valueOf(LocalDateTime.now()));
-		classDayService.add(classDayDTO);
+		lessonService.add(classDayDTO);
 		
 		// Cap nhat so buoi hoc hoan thanh
 		classOpeningDTO.setNumberOfLessonsLearned(classOpeningDTO.getNumberOfLessonsLearned() + 1);		
@@ -196,14 +222,14 @@ public class ClassDayController {
 			@RequestParam(name = "idClass") int idClass,
 			@RequestParam(name = "date") String date) {
 		ClassOpeningDTO classOpeningDTO = classOpeningService.getByID(idClass);
-		ClassDayDTO classDayDTO = new ClassDayDTO();
+		LessonDTO classDayDTO = new LessonDTO();
 		
 		classDayDTO.setClassOpeningDTO(classOpeningDTO);
 		classDayDTO.setDay(String.valueOf(date));
 		classDayDTO.setStatus(-1);
-		classDayDTO.setLesson(classOpeningDTO.getNumberOfLessonsLearned() + 1);
+		classDayDTO.setLessonNumber(classOpeningDTO.getNumberOfLessonsLearned() + 1);
 		classDayDTO.setCompletedAt(Timestamp.valueOf(LocalDateTime.now()));
-		classDayService.add(classDayDTO);
+		lessonService.add(classDayDTO);
 		return "redirect:/admin/classes-today";
 	}
 	
@@ -220,9 +246,9 @@ public class ClassDayController {
 			for (ClassDetailDTO classDetailDTO : classDetailDTOs) {
 				if (classDetailDTO.getDayOfWeekDTO().getDay() == localDate.getDayOfWeek().getValue() + 1
 						&& classDetailDTO.getClassOpeningDTO().getStatus() == 0) {
-					ClassDay classDay = dao.checkClassCompleted(classDetailDTO.getClassOpeningDTO().getId(), 
-							Date.valueOf(localDate));
-					if(classDay == null) {
+					Lesson lesson = lessonRepository.checkClassCompleted(classDetailDTO.getClassOpeningDTO().getId(), 
+							Date.valueOf(localDate), LessonStatus.DA_HOAN_THANH);
+					if(lesson == null) {
 						dtos.add(classDetailDTO.getClassOpeningDTO());					
 					}
 					

@@ -1,6 +1,5 @@
 package com.example.TrungTamTA.Controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,26 +19,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.TrungTamTA.Dao.ClassOpeningDao;
 import com.example.TrungTamTA.Dao.RegisterCourseDao;
-import com.example.TrungTamTA.Entity.ClassDay;
-import com.example.TrungTamTA.Entity.ClassDetail;
 import com.example.TrungTamTA.Entity.ClassOpening;
 import com.example.TrungTamTA.Entity.RegisterCourse;
-import com.example.TrungTamTA.Model.ClassDayDTO;
 import com.example.TrungTamTA.Model.ClassDetailDTO;
 import com.example.TrungTamTA.Model.ClassOpeningDTO;
 import com.example.TrungTamTA.Model.ClassRoomDTO;
 import com.example.TrungTamTA.Model.CourseDTO;
+import com.example.TrungTamTA.Model.LessonDTO;
 import com.example.TrungTamTA.Model.RegisterCourseDTO;
-import com.example.TrungTamTA.Model.StudentDetailDTO;
 import com.example.TrungTamTA.Model.StudentDetailInCompletedClassDTO;
 import com.example.TrungTamTA.Model.TeacherDTO;
 import com.example.TrungTamTA.Model.TutorDTO;
-import com.example.TrungTamTA.Service.ClassDayService;
 import com.example.TrungTamTA.Service.ClassDetailService;
 import com.example.TrungTamTA.Service.ClassOpeningService;
 import com.example.TrungTamTA.Service.ClassRoomService;
 import com.example.TrungTamTA.Service.CourseService;
 import com.example.TrungTamTA.Service.DayOfWeekService;
+import com.example.TrungTamTA.Service.LessonService;
 import com.example.TrungTamTA.Service.RegisterCourseService;
 import com.example.TrungTamTA.Service.ShiftService;
 import com.example.TrungTamTA.Service.StudentDetailInCompletedClassService;
@@ -51,6 +47,7 @@ import com.example.TrungTamTA.Service.TutorService;
 @Transactional
 @RequestMapping("/admin")
 public class ClassOpeningController {
+	@Autowired LessonService lessonService;
 	
 	@Autowired ClassOpeningService service;
 	@Autowired ClassOpeningDao dao;
@@ -72,7 +69,6 @@ public class ClassOpeningController {
 	@Autowired ClassOpeningDao classOpeningDao;
 	
 	@Autowired RegisterCourseDao registerCourseDao;
-	@Autowired ClassDayService classDayService;
 	@Autowired StudentDetailService stuDetailService;
 	
 	@Autowired StudentDetailInCompletedClassService stuCompletedClassService;
@@ -194,7 +190,7 @@ public class ClassOpeningController {
 	@GetMapping("/lessons-in-class/{idClass}")
 	public String lessonsInClass(Model model, @PathVariable(name = "idClass") int idClass)
 	{
-		List<ClassDayDTO> dtos = classDayService.getClassDaysWereCompleted(idClass);
+		List<LessonDTO> dtos = lessonService.getLessonsWereCompleted(idClass);
 		model.addAttribute("lessons", dtos);
 		model.addAttribute("class", service.getByID(idClass));
 		return "class/lessonsInClass";
@@ -204,7 +200,7 @@ public class ClassOpeningController {
 	@GetMapping("/postpone-class-list")
 	public String postponeClassList(Model model, @RequestParam(name = "idClass") int idClass)
 	{
-		List<ClassDayDTO> dtos = classDayService.getClassDaysWerePostPone(idClass);
+		List<LessonDTO> dtos = lessonService.getLessonsWerePostPone(idClass);
 		model.addAttribute("lessons", dtos);
 		model.addAttribute("class", service.getByID(idClass));
 		return "class/postponeClassList";
