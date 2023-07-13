@@ -100,6 +100,7 @@ public class LessonServiceImpl implements LessonService{
 	@Override
 	public void update(LessonDTO lessonDTO) {
 		Lesson lesson = lessonRepository.findByid(lessonDTO.getId());
+		System.out.println(lesson);
 		if(lesson != null) {
 			setInfo(lesson, lessonDTO);
 			lessonRepository.save(lesson);
@@ -119,7 +120,7 @@ public class LessonServiceImpl implements LessonService{
 		Lesson lesson = lessonRepository.findByid(id);
 		if(lesson != null) {
 			LessonDTO lessonDTO = new LessonDTO();
-			setInfo(lesson, lessonDTO);
+			getInfo(lesson, lessonDTO);
 			return lessonDTO;
 		}
 		

@@ -13,6 +13,8 @@ public interface AttendanceService {
 	
 	public List<AttendanceDTO> getByIdClass(int idClass);
 	
+	public List<AttendanceDTO> getByIdLesson(int idLesson);
+	
 	public List<AttendanceDTO> getByStatus(int status);
 	
 	public void add(AttendanceDTO dto);

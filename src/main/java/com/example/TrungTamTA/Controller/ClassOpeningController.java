@@ -190,7 +190,7 @@ public class ClassOpeningController {
 	@GetMapping("/lessons-in-class/{idClass}")
 	public String lessonsInClass(Model model, @PathVariable(name = "idClass") int idClass)
 	{
-		List<LessonDTO> dtos = lessonService.getLessonsWereCompleted(idClass);
+		List<LessonDTO> dtos = lessonService.getByidClass(idClass);
 		model.addAttribute("lessons", dtos);
 		model.addAttribute("class", service.getByID(idClass));
 		return "class/lessonsInClass";

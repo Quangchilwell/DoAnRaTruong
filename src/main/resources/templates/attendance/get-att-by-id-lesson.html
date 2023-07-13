@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Danh sách các buổi học trong lớp</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<header th:replace="common/headerAdmin :: headerAdmin"></header>
+	<div class="container">
+		<h2>
+			Thông tin điểm danh buổi học ngày <span th:text="${lesson.day}"></span>
+			của lớp <span th:text="${lesson.classOpeningDTO.name}"></span>
+		</h2>
+		
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Mã buổi học</th>
+					<th>Mã học viên</th>
+					<th>Tên học viên</th>
+					<th>Trạng thái</th>
+					<th>Lựa chọn</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="att: ${attendanceDTOs}">
+					<td th:text="${att.id}"></td>
+					
+					<td th:text="${att.studentDTO.id}"></td>
+					
+					<td th:text="${att.studentDTO.name}"></td>
+					
+					<td th:if="${att.status == 0}">Vắng</td>
+					<td th:if="${att.status == 1}">Đi học</td>
+					
+					<td>
+						<a th:if="${att.status == 0}" th:href="@{/qlhv/attendance/update-att(id=${att.id}, status=1)}">
+							Sửa có đi học</a>
+							
+						<a th:if="${att.status == 1}" th:href="@{/qlhv/attendance/update-att(id=${att.id}, status=0)}">
+							Sửa không đi học</a>
+					</td>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

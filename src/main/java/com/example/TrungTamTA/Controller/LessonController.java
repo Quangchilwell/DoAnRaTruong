@@ -130,18 +130,23 @@ public class LessonController {
 		} else {
 			model.addAttribute("date", DateUtils.convertDateToDateOfVN(LocalDate.now()));
 		}
-		
+		if(dateToCheck != null) {
+			model.addAttribute("dateToCheck", dateToCheck);
+		}
 		return "class/student-attendance";
 	}
 	
 	// Điểm danh có đi học
 	@GetMapping("/classDay/student-attendance/present")
 	public String present(Model model, @RequestParam("idStudent") int idStudent,
-			@RequestParam("idClass") int idClass, @RequestParam("idLesson") int idLesson) {
+			@RequestParam("idClass") int idClass, 
+			@RequestParam("idLesson") int idLesson,
+			@RequestParam("date") String date) {
 		
 		// Thêm mới điểm danh
 		AttendanceDTO attendanceDTO = new AttendanceDTO();
 		attendanceDTO.setClassDTO(classOpeningService.getByID(idClass));
+		attendanceDTO.setLessonDTO(lessonService.getByID(idLesson));
 		attendanceDTO.setStudentDTO(studentService.getByID(idStudent));
 		attendanceDTO.setStatus(AttendanceStatus.PRESENT);
 		attendanceService.add(attendanceDTO);
@@ -151,17 +156,20 @@ public class LessonController {
 		draftAttendance.setIdStudent(idStudent);
 		draftAttendanceRepository.save(draftAttendance);
 		
-		return "redirect:/admin/lesson-completed?idClass=" + idClass;
+		return "redirect:/admin/lesson-completed?idClass=" + idClass + "&date=" + date;
 	}
 	
 	// Điểm danh không đi học
 	@GetMapping("/classDay/student-attendance/absent")
 	public String absesent(Model model, @RequestParam("idStudent") int idStudent,
-			@RequestParam("idClass") int idClass) {
+			@RequestParam("idClass") int idClass,
+			@RequestParam("idLesson") int idLesson,
+			@RequestParam("date") String date) {
 		
 		// Thêm mới điểm danh
 		AttendanceDTO attendanceDTO = new AttendanceDTO();
 		attendanceDTO.setClassDTO(classOpeningService.getByID(idClass));
+		attendanceDTO.setLessonDTO(lessonService.getByID(idLesson));
 		attendanceDTO.setStudentDTO(studentService.getByID(idStudent));
 		attendanceDTO.setStatus(AttendanceStatus.ABSENT);
 		attendanceService.add(attendanceDTO);
@@ -171,12 +179,13 @@ public class LessonController {
 		draftAttendance.setIdStudent(idStudent);
 		draftAttendanceRepository.save(draftAttendance);
 		
-		return "redirect:/admin/lesson-completed?idClass=" + idClass;
+		return "redirect:/admin/lesson-completed?idClass=" + idClass + "&date=" + date;
 	}
 	
 	// Xác nhận hoàn thành buổi học
-	@GetMapping("/classDay/confirm-complete-lesson/{idClass}")
-	public String confirmCompleteLesson(Model model, @PathVariable("idClass") int idClass) {
+	@GetMapping("/classDay/confirm-complete-lesson")
+	public String confirmCompleteLesson(Model model, @RequestParam("idClass") int idClass,
+			@RequestParam("idLesson") int idLesson) {
 		
 		ClassOpeningDTO classOpeningDTO = classOpeningService.getByID(idClass);
 		
@@ -196,20 +205,15 @@ public class LessonController {
 			draftAttendanceRepository.delete(draftAttendance);
 		}
 		
-		// Luu thong tin buoi hoc
-		LessonDTO classDayDTO = new LessonDTO();
-		classDayDTO.setClassOpeningDTO(classOpeningDTO);
-		classDayDTO.setDay(String.valueOf(LocalDate.now()));
-		classDayDTO.setStatus(ClassCompletionStatus.COMPLETE);
-		classDayDTO.setLessonNumber(classOpeningDTO.getNumberOfLessonsLearned() + 1);
-		classDayDTO.setCompletedAt(Timestamp.valueOf(LocalDateTime.now()));
-		lessonService.add(classDayDTO);
+		// Cap nhat thong tin buoi hoc ve trang thai da hoan thanh
+		LessonDTO lessonDTO = lessonService.getByID(idLesson);
+		lessonDTO.setStatus(LessonStatus.DA_HOAN_THANH);
+		if(lessonDTO != null) {
+			lessonService.update(lessonDTO);
+		}
 		
 		// Cap nhat so buoi hoc hoan thanh
 		classOpeningDTO.setNumberOfLessonsLearned(classOpeningDTO.getNumberOfLessonsLearned() + 1);		
-		if(classOpeningDTO.getCourseDTO().getStudyTime() * 8 == classOpeningDTO.getNumberOfLessonsLearned()) {
-			classOpeningDTO.setStatus(ClassStatus.HOAN_THANH);
-		}
 		classOpeningService.update(classOpeningDTO);
 		
 		// Ve danh sach lop hoc hom nay

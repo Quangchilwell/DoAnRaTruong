@@ -27,15 +27,17 @@
 					<td th:text="${student.studentDTO.id}"></td>
 					<td th:text="${student.studentDTO.name}"></td>
 					<td>
-						<a th:href="@{/admin/classDay/student-attendance/present(idStudent=${student.studentDTO.id}, idClass=${class.id})}">Đi học</a> |
-						<a th:href="@{/admin/classDay/student-attendance/absent(idStudent=${student.studentDTO.id}, idClass=${class.id})}">Vắng</a>
+						<a th:href="@{/admin/classDay/student-attendance/present(idStudent=${student.studentDTO.id}, idClass=${class.id}, idLesson=${idLesson}, date=${dateToCheck})}">
+							Đi học
+						</a> |
+						<a th:href="@{/admin/classDay/student-attendance/absent(idStudent=${student.studentDTO.id}, idClass=${class.id}, idLesson=${idLesson}, date=${dateToCheck})}">Vắng</a>
 					</td>
 
 				</tr>
 			</tbody>
 		</table>
 		
-		<a class="btn btn-primary" th:href="@{/admin/classDay/confirm-complete-lesson/__${class.id}__}">Xác nhận hoàn thành buổi học</a>
+		<a class="btn btn-primary" th:href="@{/admin/classDay/confirm-complete-lesson(idClass=${class.id}, idLesson=${idLesson})}">Xác nhận hoàn thành buổi học</a>
 	</div>
 </body>
 </html>

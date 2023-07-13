@@ -29,10 +29,10 @@
 				<tr th:each="lesson: ${lessons}">
 					<td th:text="${lesson.day}"></td>
 					<td th:text="${lesson.classOpeningDTO.shiftDTO.name}"></td>
-					<td th:text="${lesson.lesson}"></td>
+					<td th:text="${lesson.lessonNumber}"></td>
 					<td th:text="${lesson.completedAt}"></td>
 					<td>
-						<a th:href="@{/admin/attendance/attentdance-by-lessons}">Danh sách điểm danh</a>
+						<a th:href="@{/qlhv/attendance/get-att-by-idLesson/__${lesson.id}__}">Danh sách điểm danh</a>
 					</td>
 				</tr>
 			</tbody>

@@ -106,7 +106,7 @@
 			th:href="@{/admin/confirm-complete-class/__${class.id}__}">Hoàn thành lớp học</a>
 			
 		<a class="btn btn-primary" 
-			th:href="@{/admin/lessons-in-class/__${class.id}__}">Chi tiết các buổi học</a>
+			th:href="@{/admin/lessons-in-class/__${class.id}__}">Danh sách các buổi học</a>
 			
 		<h3 th:if="${details != null}">Các ngày học của lớp:
 			<span th:each="detail: ${details}"> Thứ <span th:text="${detail.dayOfWeekDTO.day}"></span> - </span>

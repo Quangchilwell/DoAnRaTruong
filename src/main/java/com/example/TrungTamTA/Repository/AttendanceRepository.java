@@ -14,6 +14,8 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Integer>
 	
 	public List<Attendance> findByidClass(int idCLass);
 	
+	public List<Attendance> findByidLesson(int idLesson);
+	
 	public List<Attendance> findBystatus(int status); // 0: Vắng, 1: Đi học.
 	
 }
