@@ -31,4 +31,7 @@ public class Lesson implements Serializable {
 	private int lessonNumber;
 
 	private int status;
+	
+	@Column(name = "reason_postpone")
+	private String reasonPostPone;
 }

@@ -24,7 +24,6 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>Chọn</th>
 					<th>Mã đăng kí</th>
 					<th>Mã khóa học</th>
 					<th>Loại đăng kí</th>
@@ -36,7 +35,6 @@
 
 			<tbody>
 				<tr th:each="register: ${registers}">
-					<td> <input th:value="${register.id}" type="checkbox" name="idRegisters"/> </td>
 					<td th:text="${register.id}"></td>
 					<td th:text="${register.courseDTO.id}"></td>
 					<td th:if="${register.comboDTO != null}">Theo combo</td>
@@ -44,8 +42,6 @@
 					<td th:text="${register.courseDTO.name}"></td>
 					<td th:text="${register.studentDTO.name}"></td>
 					<td>
-						<a th:href="@{/tvv/update-register-course/__${register.id}__(idStudent=${register.studentDTO.id})}"
-						>Chuyển khóa học</a> |
 						<a 
 							class="option-from-user btn-force-delete" 
 							th:dataid="${register.id}"

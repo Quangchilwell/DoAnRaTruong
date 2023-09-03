@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Lịch sử giảng dạy của giáo viên</title>
+<link rel="stylesheet" href="">
+</head>
+
+<body>
+	<header th:replace="common/headerAdmin :: headerAdmin"></header>
+	<div class="container">
+		<h2>
+			Lịch sử giảng dạy của giáo viên <span th:text="${teacher.name}"></span>
+		</h2>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Lớp học</th>
+					<th>Khóa học</th>
+					<th>Ngày hoàn thành</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="history: ${histories}">
+					<td th:text="${history.classDTO.name}"></td>
+					<td th:text="${history.classDTO.courseDTO.name}"></td>
+					<td th:text="${history.completionDate}"></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<a class="btn btn-primary" th:href="@{/admin/info-teacher/__${teacher.id}__}">Quay lại</a>
+	</div>
+</body>
+</html>

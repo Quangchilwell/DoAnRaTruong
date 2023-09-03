@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Danh sách điểm danh cho học viên</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<header th:replace="common/headerAdmin :: headerAdmin"></header>
+	<div class="container">
+		<h2>
+			Thông tin điểm danh của học viên <span th:text="${student.name}"></span>
+			có mã học viên <span th:text="${student.name}"></span>
+		</h2>
+		
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Mã điểm danh</th>
+					<th>Ngày điểm danh</th>
+					<th>Trạng thái</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="att: ${attendanceDTOs}">
+					<td th:text="${att.id}"></td>
+					<td th:text="${att.attendanceDate}"></td>
+					
+					<td th:if="${att.status == 0}">Không đi học</td>
+					<td th:if="${att.status == 1}">Có đi học</td>
+		
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

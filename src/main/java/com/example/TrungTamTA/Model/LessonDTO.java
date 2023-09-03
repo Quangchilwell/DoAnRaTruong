@@ -14,4 +14,5 @@ public class LessonDTO {
 	private int status;
 	private Timestamp completedAt;
 	private String day;
+	private String reasonPostPone;
 }

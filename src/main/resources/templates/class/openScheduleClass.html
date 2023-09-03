@@ -32,6 +32,7 @@
 						<th>Mã khóa học</th>
 						<th>Loại đăng kí</th>
 						<th>Khóa học đăng kí</th>
+						<th>Mã học viên</th>
 						<th>Học viên</th>
 						<th>Lựa chọn</th>
 					</tr>
@@ -45,6 +46,7 @@
 						<td th:if="${register.comboDTO != null}">Theo combo</td>
 						<td th:if="${register.comboDTO == null}">Theo khóa lẻ</td>
 						<td th:text="${register.courseDTO.name}"></td>
+						<td th:text="${register.studentDTO.id}"></td>
 						<td th:text="${register.studentDTO.name}"></td>
 					
 						<td>

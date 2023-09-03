@@ -26,7 +26,7 @@ public interface RegisterCourseRepository extends JpaRepository<RegisterCourse, 
 	
 	@Query(value = "SELECT rc.*\r\n"
 			+ "FROM register_course AS rc\r\n"
-			+ "WHERE rc.id_course = ?1 AND rc.enable=\"Yes\"", nativeQuery = true)
+			+ "WHERE rc.id_course = ?1 AND rc.id_class_opening = 0 AND rc.enable=\"Yes\"", nativeQuery = true)
 	public List<RegisterCourse> getRegistersCanOpenClass(int idCourse);
 	
 	@Query(value = "SELECT * FROM register_course as rc \r\n"

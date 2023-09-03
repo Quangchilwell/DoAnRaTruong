@@ -15,6 +15,7 @@ import com.example.TrungTamTA.Model.LessonDTO;
 import com.example.TrungTamTA.Service.AttendanceService;
 import com.example.TrungTamTA.Service.ClassOpeningService;
 import com.example.TrungTamTA.Service.LessonService;
+import com.example.TrungTamTA.Service.StudentService;
 
 @Controller
 @RequestMapping("/qlhv/attendance/")
@@ -22,6 +23,7 @@ public class AttendanceController {
 
 	@Autowired AttendanceService attendanceService;
 	@Autowired LessonService lessonService;
+	@Autowired StudentService studentService;
 	
 	@GetMapping("get-att-by-idLesson/{idLesson}")
 	public String getByIdClass(Model model, @PathVariable("idLesson") int idLesson) {
@@ -30,6 +32,17 @@ public class AttendanceController {
 		model.addAttribute("attendanceDTOs", attendanceDTOs);
 		model.addAttribute("lesson", lessonService.getByID(idLesson));
 		return "attendance/get-att-by-id-lesson";
+	}
+	
+	@GetMapping("get-by-id-student")
+	public String getByIdStudent(Model model, 
+			@RequestParam(name = "idStudent") int idStudent,
+			@RequestParam(name = "idClass") int idClass) {
+		List<AttendanceDTO> attendanceDTOs = attendanceService.getByStudentAndClass(idStudent, idClass);
+		
+		model.addAttribute("attendanceDTOs", attendanceDTOs);
+		model.addAttribute("student", studentService.getByID(idStudent));
+		return "attendance/get-by-id-student";
 	}
 	
 	@GetMapping("update-att")

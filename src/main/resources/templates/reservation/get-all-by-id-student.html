@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Thông tin bảo lưu</title>
+<link rel="stylesheet" href="">
+</head>
+
+<body>
+	<header th:replace="common/headerAdmin :: headerAdmin"></header>
+	<div class="container">
+		<h2>Thông tin bảo lưu</h2>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Mã bảo lưu</th>
+					<th>Ngày bảo lưu</th>
+					<th>Ngày kết thúc</th>
+					<th>Lớp học bảo lưu</th>
+					<th>Trạng thái</th>
+					<th>Lựa chọn</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="dto: ${reserDtos}">
+					<td th:text="${dto.id}"></td>
+					<td th:text="${dto.reservationDate}"></td>
+					
+					<td th:if="${dto.endDate != 'null'}" th:text="${dto.endDate}"></td>
+					<td th:if="${dto.endDate == 'null'}">Chưa hoàn thành</td>
+					
+					<td th:text="${dto.classOpeningDTO.name}"></td>
+					<td th:if="${dto.status == 0}">Đang bảo lưu</td>
+					<td th:if="${dto.status == 1}">Hoàn thành bảo lưu</td>
+					
+					<td>
+						<a th:if="${dto.status == 0}" 
+							th:href="@{/admin/reservation/finish-reservation/__${dto.id}__}">
+							Kết thúc bảo lưu</a>						
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+
+</body>
+</html>

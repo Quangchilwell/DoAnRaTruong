@@ -1,5 +1,7 @@
 package com.example.TrungTamTA.Controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.TrungTamTA.Model.StudentDTO;
+import com.example.TrungTamTA.Model.StudentDetailInCompletedClassDTO;
+import com.example.TrungTamTA.Service.StudentDetailInCompletedClassService;
 import com.example.TrungTamTA.Service.StudentService;
 
 @Controller
@@ -20,6 +24,8 @@ public class StudentController {
 	
 	@Autowired 
 	StudentService studentService;
+	
+	@Autowired StudentDetailInCompletedClassService completedClassService;
 	
 	@GetMapping("/student-list")
 	public String studentList(Model model)
@@ -81,5 +87,13 @@ public class StudentController {
 	{
 		studentService.delete(id);
 		return "redirect:/admin/student-list";
+	}
+	
+	@GetMapping("/student/student-histories/{id}")
+	public String studentHistory(Model model, @PathVariable(name = "id") int id) {
+		List<StudentDetailInCompletedClassDTO> dtos = completedClassService.getByIdStudent(id);
+		model.addAttribute("dtos", dtos);
+		model.addAttribute("student", studentService.getByID(id));
+		return "student/student-histories";
 	}
 }

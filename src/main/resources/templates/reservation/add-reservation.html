@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Thêm mới bảo lưu</title>
+<link rel="stylesheet" href="">
+</head>
+<body>
+	<header th:replace="common/headerAdmin :: headerAdmin"></header>
+	<div class="container">
+		<h2>
+			Bảo lưu cho học viên <span th:text="${student.name}"></span>
+			tại lớp <span th:text="${class.name}"></span>
+		</h2>
+		
+		<form id="form-validation" action="/admin/reservation/add-reservation" 
+			method="post" th:object="${dto}">
+		
+			<input name="idClass" th:value="${class.id}" type="hidden"/>	
+			<input name="idStudent" th:value="${student.id}" type="hidden"/>	
+			<input name="idRegister" th:value="${idRegister}" type="hidden"/>	
+			
+			<input th:field="*{idStudent}" th:value="${student.id}" type="hidden"/>	
+		
+			<div class="form-group">
+				<label for="discount">Thời hạn bảo lưu</label> 
+				<input class="form-control" placeholder="Tính theo tháng"/>
+			</div>
+		
+			<div class="form-group">
+				<label for="discount">Lí do bảo lưu</label> 
+				<input th:field="*{reason}" class="form-control" placeholder="Nhập lí do"/>
+			</div>
+			
+			<div class="form-group">
+				<label for="discount">Ghi chú</label> 
+				<input th:field="*{note}" class="form-control" placeholder="Nhập ghi chú"/>
+			</div>
+	
+			<button type="submit" class="btn btn-default">Xác nhận bảo lưu</button>
+			<a class="btn btn-primary" th:href="@{/admin/course-type-list}">Quay lại lớp học</a>
+		</form>
+	</div>
+</body>
+</html>

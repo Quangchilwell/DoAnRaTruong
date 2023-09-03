@@ -35,7 +35,7 @@ public class StudentDetailInCompletedClassServiceImpl implements StudentDetailIn
 	
 	private void setInfo(StudentDetailInCompletedClassDTO dto, StudentDetailInCompletedClass stu) {
 		stu.setIdClass(dto.getClassOpeningDTO().getId());
-		stu.setIdStudent(dto.getClassOpeningDTO().getId());
+		stu.setIdStudent(dto.getStudentDTO().getId());
 		stu.setCompletedDate(Date.valueOf(LocalDate.now()));
 		stu.setIsPassed(dto.getIsPassed());
 	}

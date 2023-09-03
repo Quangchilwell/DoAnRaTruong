@@ -79,6 +79,10 @@
 		
 		<a class="btn btn-primary" th:href="@{/tvv/student-register-list(idStudent = ${student.id})}">Danh sách đăng kí</a>
 		
+		<a class="btn btn-primary" th:href="@{/admin/reservation/get-by-id-student/__${student.id}__}">Thông tin bảo lưu</a>
+		
+		<a class="btn btn-primary" th:href="@{/admin/student/student-histories/__${student.id}__}">Lịch sử học tập</a>
+		
 	</div>
 </body>
 </html>

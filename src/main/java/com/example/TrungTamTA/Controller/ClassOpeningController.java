@@ -17,10 +17,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.TrungTamTA.Constant.CompletionClassStatus;
 import com.example.TrungTamTA.Dao.ClassOpeningDao;
 import com.example.TrungTamTA.Dao.RegisterCourseDao;
 import com.example.TrungTamTA.Entity.ClassOpening;
 import com.example.TrungTamTA.Entity.RegisterCourse;
+import com.example.TrungTamTA.Entity.StudentHistory;
+import com.example.TrungTamTA.Entity.TeacherHistory;
 import com.example.TrungTamTA.Model.ClassDetailDTO;
 import com.example.TrungTamTA.Model.ClassOpeningDTO;
 import com.example.TrungTamTA.Model.ClassRoomDTO;
@@ -28,7 +31,9 @@ import com.example.TrungTamTA.Model.CourseDTO;
 import com.example.TrungTamTA.Model.LessonDTO;
 import com.example.TrungTamTA.Model.RegisterCourseDTO;
 import com.example.TrungTamTA.Model.StudentDetailInCompletedClassDTO;
+import com.example.TrungTamTA.Model.StudentHistoryDTO;
 import com.example.TrungTamTA.Model.TeacherDTO;
+import com.example.TrungTamTA.Model.TeacherHistoryDTO;
 import com.example.TrungTamTA.Model.TutorDTO;
 import com.example.TrungTamTA.Service.ClassDetailService;
 import com.example.TrungTamTA.Service.ClassOpeningService;
@@ -40,6 +45,8 @@ import com.example.TrungTamTA.Service.RegisterCourseService;
 import com.example.TrungTamTA.Service.ShiftService;
 import com.example.TrungTamTA.Service.StudentDetailInCompletedClassService;
 import com.example.TrungTamTA.Service.StudentDetailService;
+import com.example.TrungTamTA.Service.StudentHistoryService;
+import com.example.TrungTamTA.Service.TeacherHistoryService;
 import com.example.TrungTamTA.Service.TeacherService;
 import com.example.TrungTamTA.Service.TutorService;
 
@@ -50,9 +57,11 @@ public class ClassOpeningController {
 	@Autowired LessonService lessonService;
 	
 	@Autowired ClassOpeningService service;
+	
 	@Autowired ClassOpeningDao dao;
 	
 	@Autowired ClassDetailService classDetailService;
+	
 	@Autowired RegisterCourseService registerCourseService;
 	
 	@Autowired TeacherService teacherService;
@@ -64,14 +73,20 @@ public class ClassOpeningController {
 	@Autowired CourseService courseService;
 	
 	@Autowired ShiftService shiftService;
+	
 	@Autowired DayOfWeekService dayOfWeekService;
 	
 	@Autowired ClassOpeningDao classOpeningDao;
 	
 	@Autowired RegisterCourseDao registerCourseDao;
+	
 	@Autowired StudentDetailService stuDetailService;
 	
 	@Autowired StudentDetailInCompletedClassService stuCompletedClassService;
+	
+	@Autowired StudentHistoryService studentHistoryService;
+	
+	@Autowired TeacherHistoryService teacherHistoryService;
 	
 	public void getResponsiveList(Model model, int idClass)
 	{
@@ -126,6 +141,10 @@ public class ClassOpeningController {
 		model.addAttribute("class", dto);
 		model.addAttribute("details", classDetailService.getByidClassOpening(id));
 		model.addAttribute("days", days);
+		
+		// Các buổi học hoàn thành
+		List<LessonDTO> lessonDTOs = lessonService.getLessonsWereCompleted(id);
+		model.addAttribute("lessonsNumber", lessonDTOs.size());
 		return "class/infoClass";
 	}
 	
@@ -190,7 +209,7 @@ public class ClassOpeningController {
 	@GetMapping("/lessons-in-class/{idClass}")
 	public String lessonsInClass(Model model, @PathVariable(name = "idClass") int idClass)
 	{
-		List<LessonDTO> dtos = lessonService.getByidClass(idClass);
+		List<LessonDTO> dtos = lessonService.getLessonsWereCompleted(idClass);
 		model.addAttribute("lessons", dtos);
 		model.addAttribute("class", service.getByID(idClass));
 		return "class/lessonsInClass";
@@ -400,7 +419,14 @@ public class ClassOpeningController {
 	public String completedClass(@RequestParam(name = "idClass") int idClass) {
 		ClassOpeningDTO dto = service.getByID(idClass);
 		dto.setStatus(1);
-		service.updateStatusOfClass(dto);
+//		service.updateStatusOfClass(dto);
+		
+		// Cập nhật lịch sử giảng viên
+		TeacherHistoryDTO teacherHistoryDTO = new TeacherHistoryDTO();
+		teacherHistoryDTO.setIdClass(idClass);
+		teacherHistoryDTO.setIdTeacher(dto.getTeacherDTO().getId());
+		teacherHistoryService.add(teacherHistoryDTO);
+		
 		return "redirect:/admin/complete-class-list";
 	}
 	
@@ -476,28 +502,8 @@ public class ClassOpeningController {
 		return "redirect:/admin/update-status-students?idClass=" + idClass;
 	}
 	
-//	@PostMapping("/student-do-not-complete-class/not-free/{idRegister}")
-//	public String notFree(Model model, 
-//			@PathVariable(name = "idRegister") int idRegister) {
-//		// Lay thong tin dang ki
-//		RegisterCourseDTO reDto = registerCourseService.getByID(idRegister);
-//		
-//		// Luu thong tin hoc vien chua qua lop
-//		StudentDetailInCompletedClassDTO stuInCompletedClassDTO = new StudentDetailInCompletedClassDTO();
-//		stuInCompletedClassDTO.setClassOpeningDTO(reDto.getClassOpeningDTO());
-//		stuInCompletedClassDTO.setStudentDTO(reDto.getStudentDTO());
-//		stuInCompletedClassDTO.setIsPassed(1);
-//		stuCompletedClassService.add(stuInCompletedClassDTO);		
-//		
-//		// Cap nhat lai dang ki ve chua co lop
-//		reDto.setClassOpeningDTO(null);
-//		registerCourseService.update(reDto);
-//		
-//		// Tao mot hoa don moi 
-//		
-//		
-//		return "redỉrect:/admin/class-completion";
-//	}
+	// Học viên học lại mất phí
+	
 	
 	@GetMapping("class-completion/class-detail/{idClass}")
 	public String classCompletionDetail(Model model, @PathVariable(name = "idClass") int idClass) {

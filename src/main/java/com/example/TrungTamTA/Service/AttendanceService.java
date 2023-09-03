@@ -11,6 +11,8 @@ public interface AttendanceService {
 	
 	public List<AttendanceDTO> getByIdStudent(int idStudent);
 	
+	public List<AttendanceDTO> getByStudentAndClass(int idStudent, int idClass);
+	
 	public List<AttendanceDTO> getByIdClass(int idClass);
 	
 	public List<AttendanceDTO> getByIdLesson(int idLesson);

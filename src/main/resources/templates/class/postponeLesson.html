@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="common/head :: head(~{::title},~{::link})">
+<meta charset="UTF-8">
+<title>Hoãn buổi học</title>
+<link rel="stylesheet" href="">
+</head>
+
+<body>
+	<header th:replace="common/headerAdmin :: headerAdmin"></header>
+	<div class="container">
+		<h2>Hoãn buổi học cho lớp </h2>
+		
+		<form th:action="@{/admin/lesson/postpone-lesson}" method="post" th:object="${lessonDTO}">
+			<input name="idClass" th:value="${class.id}" type="hidden"/>
+			<input name="date" th:value="${date}" type="hidden"/>
+			
+			<div class="form-group">
+	        	<label for="" class="form-label">Lí do hoãn buổi học</label>
+				<input th:field="*{reasonPostPone}" class="form-control"/>
+        	</div>
+			<button class="btn btn-primary">Xác nhận hoãn buổi học</button>
+		</form>
+		
+	</div>
+
+</body>
+</html>

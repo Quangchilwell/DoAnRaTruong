@@ -26,19 +26,27 @@
 					<td th:text="${student.studentDTO.name}"></td>
 					<td th:text="${student.studentDTO.birthday}"></td>
 					<td>
-						<a 
+						<!--   <a 
 							class="option-from-user btn-force-delete" 
 							th:dataid="${student.id}"
 							data-toggle="modal"
 							data-target="#myModal"
-							href="">Bỏ khỏi danh sách</a>
+							href="">Bỏ khỏi danh sách</a> |-->
+							
+						<a  
+							th:href="@{/admin/reservation/add-reservation(idClass=${class.id}, idStudent=${student.studentDTO.id}, 
+								idRegister=${student.id})}">
+							Bảo lưu</a> |
+							
+						<a th:href="@{/qlhv/attendance/get-by-id-student(idStudent=${student.studentDTO.id}, idClass=${class.id})}">
+							Thông tin điểm danh</a>
 					</td>
 
 				</tr>
 			</tbody>
 		</table>
-		<a class="btn btn-primary" th:href="@{/admin/add-student}">Thêm
-			mới học viên vào</a>
+		<!--   <a class="btn btn-primary" th:href="@{/admin/add-student}">Thêm
+			mới học viên vào</a>-->
 			
 		<a class="btn btn-primary" th:href="@{/admin/info-class/__${class.id}__}">Quay lại lớp</a>
 		

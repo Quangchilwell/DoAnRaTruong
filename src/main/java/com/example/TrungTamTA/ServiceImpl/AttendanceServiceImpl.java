@@ -148,4 +148,18 @@ public class AttendanceServiceImpl implements AttendanceService{
 		}
 		return null;
 	}
+
+	@Override
+	public List<AttendanceDTO> getByStudentAndClass(int idStudent, int idClass) {
+		List<Attendance> attendances = repository.findByidStudentAndIdClass(idStudent, idClass);
+		List<AttendanceDTO> dtos = new ArrayList<AttendanceDTO>();
+		
+		for(Attendance attendance: attendances) {
+			AttendanceDTO dto = new AttendanceDTO();
+			getInfo(attendance, dto);
+			dtos.add(dto);
+		}
+		
+		return dtos;
+	}
 }

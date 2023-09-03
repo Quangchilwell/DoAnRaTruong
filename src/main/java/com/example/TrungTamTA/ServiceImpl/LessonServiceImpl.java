@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.TrungTamTA.Constant.LessonStatus;
 import com.example.TrungTamTA.Entity.Lesson;
 import com.example.TrungTamTA.Model.LessonDTO;
 import com.example.TrungTamTA.Repository.LessonRepository;
@@ -28,6 +29,9 @@ public class LessonServiceImpl implements LessonService{
 		dto.setLessonNumber(lesson.getLessonNumber());
 		dto.setStatus(lesson.getStatus());
 		dto.setCompletedAt(lesson.getCompletedAt());
+		if(lesson.getReasonPostPone() != null) {
+			dto.setReasonPostPone(lesson.getReasonPostPone());
+		}
 	}
 	
 	private void setInfo(Lesson lesson, LessonDTO dto) {
@@ -36,6 +40,9 @@ public class LessonServiceImpl implements LessonService{
 		lesson.setStatus(dto.getStatus());
 		lesson.setLessonNumber(dto.getLessonNumber());
 		lesson.setCompletedAt(Timestamp.valueOf(LocalDateTime.now()));
+		if(dto.getReasonPostPone() != null) {
+			lesson.setReasonPostPone(dto.getReasonPostPone());
+		}
 	}
 	
 	@Override
@@ -54,7 +61,7 @@ public class LessonServiceImpl implements LessonService{
 	@Override
 	public List<LessonDTO> getByidClass(int idClass) {
 		List<LessonDTO> dtos = new ArrayList<LessonDTO>();
-		List<Lesson> lessons = lessonRepository.findAll();
+		List<Lesson> lessons = lessonRepository.findByidClassOpening(idClass);
 		
 		for(Lesson lesson: lessons) {
 			LessonDTO dto = new LessonDTO();
@@ -74,7 +81,7 @@ public class LessonServiceImpl implements LessonService{
 	@Override
 	public List<LessonDTO> getLessonsWereCompleted(int idClass) {
 		List<LessonDTO> dtos = new ArrayList<LessonDTO>();
-		List<Lesson> lessons = lessonRepository.findByidClassOpening(idClass);
+		List<Lesson> lessons = lessonRepository.findBystatusAndIdClassOpening(LessonStatus.DA_HOAN_THANH, idClass);
 		
 		for(Lesson lesson: lessons) {
 			LessonDTO dto = new LessonDTO();
@@ -87,7 +94,7 @@ public class LessonServiceImpl implements LessonService{
 	@Override
 	public List<LessonDTO> getLessonsWerePostPone(int idClass) {
 		List<LessonDTO> dtos = new ArrayList<LessonDTO>();
-		List<Lesson> lessons = lessonRepository.getLessonssWerePostPone(idClass);
+		List<Lesson> lessons = lessonRepository.findBystatusAndIdClassOpening(LessonStatus.HOAN, idClass);
 		
 		for(Lesson lesson: lessons) {
 			LessonDTO dto = new LessonDTO();

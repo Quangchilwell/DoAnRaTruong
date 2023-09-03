@@ -20,7 +20,7 @@
 					<th>Ngày hoãn</th>
 					<th>Ca</th>
 					<th>Buổi học số</th>
-					<th>Thời gian hoãn</th>
+					<th>Lí do</th>
 				</tr>
 			</thead>
 
@@ -28,8 +28,8 @@
 				<tr th:each="lesson: ${lessons}">
 					<td th:text="${lesson.day}"></td>
 					<td th:text="${lesson.classOpeningDTO.shiftDTO.name}"></td>
-					<td th:text="${lesson.lesson}"></td>
-					<td th:text="${lesson.completedAt}"></td>
+					<td th:text="${lesson.lessonNumber}"></td>
+					<td th:text="${lesson.reasonPostPone}"></td>
 				</tr>
 			</tbody>
 		</table>

@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -134,6 +136,37 @@ public class LessonController {
 			model.addAttribute("dateToCheck", dateToCheck);
 		}
 		return "class/student-attendance";
+	}
+
+	// Hoãn buổi học
+	@GetMapping(value = "lesson/postpone-lesson")
+	public String postPoneClass(Model model, @RequestParam(name = "idClass") int idClass, 
+			@RequestParam(name = "date") String date) {
+		model.addAttribute("lessonDTO", new LessonDTO());
+		model.addAttribute("class", classOpeningService.getByID(idClass));
+		model.addAttribute("date", date);
+		return "class/postponeLesson";
+	}
+	
+	@PostMapping(value = "lesson/postpone-lesson")
+	public String postPoneClass(@ModelAttribute("lessonDTO") LessonDTO lessonDTO,
+			HttpServletRequest request) {
+		int idClass = Integer.valueOf(request.getParameter("idClass"));
+		String date = String.valueOf(request.getParameter("date"));
+		
+		ClassOpeningDTO classOpeningDTO = classOpeningService.getByID(idClass);
+		
+		lessonDTO.setClassOpeningDTO(classOpeningDTO);
+		lessonDTO.setDay(date);
+		lessonDTO.setStatus(-1);
+		lessonDTO.setLessonNumber(classOpeningDTO.getNumberOfLessonsLearned() + 1);
+		lessonDTO.setCompletedAt(Timestamp.valueOf(LocalDateTime.now()));
+		lessonService.add(lessonDTO);
+		
+		// Update number lesson
+		classOpeningDTO.setNumberOfLessonsLearned(classOpeningDTO.getNumberOfLessonsLearned() + 1);
+		classOpeningService.update(classOpeningDTO);
+		return "redirect:/admin/classes-todays";
 	}
 	
 	// Điểm danh có đi học

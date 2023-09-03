@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.TrungTamTA.Dao.TeacherDao;
 import com.example.TrungTamTA.Entity.Teacher;
 import com.example.TrungTamTA.Model.TeacherDTO;
+import com.example.TrungTamTA.Service.TeacherHistoryService;
 import com.example.TrungTamTA.Service.TeacherService;
 
 @Controller
@@ -32,6 +33,9 @@ public class TeacherController {
 	TeacherService teacherService;
 	
 	@Autowired TeacherDao teacherDao;
+	
+	@Autowired
+	private TeacherHistoryService teacherHistoryService;
 	
 	@GetMapping("/teacher-list")
 	public String teacherList(Model model)
@@ -133,5 +137,13 @@ public class TeacherController {
 	{
 		teacherService.delete(id);
 		return "redirect:/admin/teacher-list";
+	}
+	
+	// LS GD
+	@GetMapping("/teacher/teacher-history/{id}")
+	public String teacherHistory(Model model, @PathVariable(name = "id") int id) {
+		model.addAttribute("histories", teacherHistoryService.getByTeacherId(id));
+		model.addAttribute("teacher", teacherService.getByID(id));
+		return "teacher/teacher-history";
 	}
 }

@@ -12,6 +12,8 @@ import com.example.TrungTamTA.Entity.Lesson;
 public interface LessonRepository extends JpaRepository<Lesson, Integer>{
 	public Lesson findByid(int id);
 	
+	public List<Lesson> findBystatusAndIdClassOpening(int status, int idClass);
+	
 	public Lesson findByidClassOpeningAndDay(int idClass, Date date);
 	
 	public List<Lesson> findByidClassOpening(int idClass);
