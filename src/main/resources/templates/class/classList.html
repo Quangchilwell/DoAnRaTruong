@@ -36,7 +36,6 @@
 					<th>Tên lớp học</th>
 					<th>Giáo viên dạy</th>
 					<th>Phòng học</th>
-					<th>Số buổi hoản thành</th>
 					<th>Trạng thái</th>
 					<th>Lựa chọn</th>
 				</tr>
@@ -53,7 +52,6 @@
 					<td th:if="${class.classRoomDTO != null}" th:text="${class.classRoomDTO.name}"></td>
 					<td th:if="${class.classRoomDTO == null}">Chưa sắp xếp</td>
 					
-					<td th:text="${class.numberOfLessonsLearned}"></td>
 					<td th:if="${class.status == -1}">Dự kiến mở</td>
 					<td th:if="${class.status == 0}">Đang học</td>
 					<td th:if="${class.status == 1}">Đã hoàn thành</td>

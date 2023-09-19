@@ -5,6 +5,9 @@ import java.util.List;
 import com.example.TrungTamTA.Model.ReservationDTO;
 
 public interface ReservationService {
+	
+	List<ReservationDTO> getAll();
+	
 	ReservationDTO getById(int id);
 	
 	List<ReservationDTO> getAllByIdStudent(int idStudent);

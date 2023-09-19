@@ -24,7 +24,6 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>Chọn</th>
 					<th>Mã đăng kí</th>
 					<th>Mã khóa học</th>
 					<th>Loại đăng kí</th>
@@ -36,7 +35,6 @@
 
 			<tbody>
 				<tr th:each="register: ${registers}">
-					<td> <input th:value="${register.id}" type="checkbox"/> </td>
 					<td th:text="${register.id}"></td>
 					<td th:text="${register.courseDTO.id}"></td>
 					<td th:if="${register.comboDTO != null}">Theo combo</td>

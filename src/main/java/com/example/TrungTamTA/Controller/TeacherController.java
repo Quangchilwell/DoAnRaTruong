@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -22,7 +23,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.TrungTamTA.Dao.TeacherDao;
 import com.example.TrungTamTA.Entity.Teacher;
+import com.example.TrungTamTA.Model.ClassDetailDTO;
 import com.example.TrungTamTA.Model.TeacherDTO;
+import com.example.TrungTamTA.Service.ClassDetailService;
+import com.example.TrungTamTA.Service.DayOfWeekService;
 import com.example.TrungTamTA.Service.TeacherHistoryService;
 import com.example.TrungTamTA.Service.TeacherService;
 
@@ -30,12 +34,19 @@ import com.example.TrungTamTA.Service.TeacherService;
 @RequestMapping("/admin")
 public class TeacherController {
 	@Autowired
-	TeacherService teacherService;
+	private TeacherService teacherService;
 	
-	@Autowired TeacherDao teacherDao;
+	@Autowired 
+	private TeacherDao teacherDao;
 	
 	@Autowired
 	private TeacherHistoryService teacherHistoryService;
+	
+	@Autowired
+	private DayOfWeekService dayOfWeekService;
+	
+	@Autowired
+	ClassDetailService classDetailService;
 	
 	@GetMapping("/teacher-list")
 	public String teacherList(Model model)
@@ -145,5 +156,30 @@ public class TeacherController {
 		model.addAttribute("histories", teacherHistoryService.getByTeacherId(id));
 		model.addAttribute("teacher", teacherService.getByID(id));
 		return "teacher/teacher-history";
+	}
+	
+	// TKB cua giáo viên
+	@GetMapping("/teacher/teacher-time-table/{id}")
+	public String teacherTimeTable(Model model, @PathVariable(name = "id") int id) {
+		try {
+			List<ClassDetailDTO> classDetailDTOs = classDetailService.getAllByTeacherIdAndStatus0(id);
+			List<ClassDetailDTO> classes = new ArrayList<ClassDetailDTO>();
+			
+			model.addAttribute("teacher", teacherService.getByID(id));
+			
+			if(classDetailDTOs.size() > 0) {
+				for(ClassDetailDTO classDetailDTO: classDetailDTOs) {
+					if(classDetailDTO.getClassOpeningDTO().getStatus() == 0) {
+						classes.add(classDetailDTO);
+					}
+				}				
+				
+				model.addAttribute("classes", classes);
+				model.addAttribute("dayOfWeeks", dayOfWeekService.getAll());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "teacher/teacher-time-table";
 	}
 }

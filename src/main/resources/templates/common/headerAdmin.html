@@ -1,7 +1,7 @@
 <nav th:fragment="headerAdmin" class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">WebSiteName</a>
+      <a class="navbar-brand" href="#">EDUKA WEBSITE</a>
     </div>
     <ul class="nav navbar-nav">
       <li class="active"><a href="#">Home</a></li>
@@ -38,6 +38,15 @@
       <li><a th:href="@{/admin/open-schedule-class(idCourse=0)}">Mở lớp dự kiến</a></li>
       
       <li><a th:href="@{/admin/time-table}">Thời khóa biểu</a></li>
+      
+       <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="">Xuất báo cáo
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+        	<li><a th:href="@{/qlhv/export-excel/export-reservation-list}">Xuất danh sách bảo lưu</a></li>
+        	<li><a th:href="@{/qlhv/export-excel/export-time-table}">Xuất thời khóa biểu của trung tâm</a></li>
+        </ul>
+      </li>
       
     </ul>
   </li>

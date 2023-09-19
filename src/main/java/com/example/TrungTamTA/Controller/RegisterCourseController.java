@@ -124,6 +124,7 @@ public class RegisterCourseController {
 		StudentDTO studentDTO = studentService.getByID(idStudent);
 		registerCourseDTO.setStudentDTO(studentDTO);
 		registerCourseDTO.setCourseDTO(courseService.getByID(registerCourseDTO.getIdCourse()));
+		registerCourseDTO.setEnable("Yes");
 		registerCourseService.add(registerCourseDTO);
 		
 		// Tao moi hoa don

@@ -17,6 +17,7 @@ import com.example.TrungTamTA.Entity.ClassDetail;
 import com.example.TrungTamTA.Model.ClassDetailDTO;
 import com.example.TrungTamTA.Model.ClassOpeningDTO;
 import com.example.TrungTamTA.Model.DayOfWeekDTO;
+import com.example.TrungTamTA.Repository.ClassDetailRepository;
 import com.example.TrungTamTA.Service.ClassDetailService;
 import com.example.TrungTamTA.Service.ClassOpeningService;
 import com.example.TrungTamTA.Service.ClassRoomService;
@@ -34,6 +35,7 @@ public class ClassDetailServiceImpl implements ClassDetailService{
 	@Autowired ClassDetailDao dao;
 	@Autowired ClassOpeningService classOpeningService;
 	@Autowired DayOfWeekService dayOfWeekService;
+	@Autowired ClassDetailRepository classDetailRepository;
 	
 	private void getInfo(ClassDetail classDetail, ClassDetailDTO classDetailDTO) {
 		ClassOpeningDTO classOpeningDTO = classOpeningService.getByID(classDetail.getIdClassOpening());
@@ -123,6 +125,20 @@ public class ClassDetailServiceImpl implements ClassDetailService{
 			return classDetailDTO;
 		}
 		return null;
+	}
+
+	@Override
+	public List<ClassDetailDTO> getAllByTeacherIdAndStatus0(int teacherId) {
+		List<ClassDetailDTO> classDetailDTOs = new ArrayList<ClassDetailDTO>();
+		List<ClassDetail> classDetails = classDetailRepository.getByidTeacherAndStatus0(teacherId);
+		
+		for(ClassDetail classDetail: classDetails) {
+			ClassDetailDTO classDetailDTO = new ClassDetailDTO();
+			getInfo(classDetail, classDetailDTO);
+			classDetailDTOs.add(classDetailDTO);
+		}
+		
+		return classDetailDTOs;
 	}
 	
 	

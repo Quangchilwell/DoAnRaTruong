@@ -27,7 +27,9 @@
 					<td th:text="${class.teacherDTO.name}"></td>
 					<td>
 						<td><a th:href="@{/admin/lesson-completed(idClass=${class.id}, date=${date} )}">Hoàn thành</a> |
-						<a th:href="@{/admin/postpone-class(idClass=${class.id}, date=${date} )}">Hoãn buổi học</a> |
+						<a
+							th:href="@{/admin/lesson/postpone-lesson(idClass=${class.id}, date=${date} )}">Hoãn
+								buổi học</a> |
 						<a th:href="@{/admin/info-class/__${class.id}__}">Thông tin</a>
 					</td>
 				</tr>

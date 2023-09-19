@@ -35,7 +35,6 @@ public class AdminController {
 			
 			if(classDetailDTOs.size() > 0) {
 				for(ClassDetailDTO classDetailDTO: classDetailDTOs) {
-//					System.out.println(classDetailDTO.ge);
 					if(classDetailDTO.getClassOpeningDTO().getStatus() == 0) {
 						classes.add(classDetailDTO);
 					}

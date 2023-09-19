@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="">
 </head>
 <body>
+	<header th:replace="common/headerAdmin :: headerAdmin"></header>
 	<div class="container">
 		<h2>Chi tiết giáo viên</h2>
 		<div class="table-responsive">
@@ -81,6 +82,7 @@
 			</table>
 		</div>
 		<a class="btn btn-primary" th:href="@{/admin/teacher/teacher-history/__${teacher.id}__}">Lịch sử giảng dạy</a>
+		<a class="btn btn-primary" th:href="@{/admin/teacher/teacher-time-table/__${teacher.id}__}">Thời khóa biểu của giáo viên</a>
 		<a class="btn btn-primary" th:href="@{/admin/teacher-list}">Danh sách giáo viên</a>
 	</div>
 </body>

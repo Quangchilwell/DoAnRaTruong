@@ -17,24 +17,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.TrungTamTA.Constant.CompletionClassStatus;
 import com.example.TrungTamTA.Dao.ClassOpeningDao;
 import com.example.TrungTamTA.Dao.RegisterCourseDao;
 import com.example.TrungTamTA.Entity.ClassOpening;
+import com.example.TrungTamTA.Entity.Invoice;
+import com.example.TrungTamTA.Entity.InvoiceDetail;
 import com.example.TrungTamTA.Entity.RegisterCourse;
-import com.example.TrungTamTA.Entity.StudentHistory;
-import com.example.TrungTamTA.Entity.TeacherHistory;
 import com.example.TrungTamTA.Model.ClassDetailDTO;
 import com.example.TrungTamTA.Model.ClassOpeningDTO;
 import com.example.TrungTamTA.Model.ClassRoomDTO;
 import com.example.TrungTamTA.Model.CourseDTO;
+import com.example.TrungTamTA.Model.InvoiceDetailDTO;
 import com.example.TrungTamTA.Model.LessonDTO;
 import com.example.TrungTamTA.Model.RegisterCourseDTO;
 import com.example.TrungTamTA.Model.StudentDetailInCompletedClassDTO;
-import com.example.TrungTamTA.Model.StudentHistoryDTO;
 import com.example.TrungTamTA.Model.TeacherDTO;
 import com.example.TrungTamTA.Model.TeacherHistoryDTO;
 import com.example.TrungTamTA.Model.TutorDTO;
+import com.example.TrungTamTA.Repository.InvoiceDetailRepository;
+import com.example.TrungTamTA.Repository.InvoiceRepository;
 import com.example.TrungTamTA.Service.ClassDetailService;
 import com.example.TrungTamTA.Service.ClassOpeningService;
 import com.example.TrungTamTA.Service.ClassRoomService;
@@ -54,58 +55,80 @@ import com.example.TrungTamTA.Service.TutorService;
 @Transactional
 @RequestMapping("/admin")
 public class ClassOpeningController {
-	@Autowired LessonService lessonService;
+	@Autowired
+	LessonService lessonService;
+
+	@Autowired
+	ClassOpeningService service;
+
+	@Autowired
+	ClassOpeningDao dao;
+
+	@Autowired
+	ClassDetailService classDetailService;
+
+	@Autowired
+	RegisterCourseService registerCourseService;
+
+	@Autowired
+	TeacherService teacherService;
+
+	@Autowired
+	ClassRoomService classRoomService;
+
+	@Autowired
+	TutorService tutorService;
+
+	@Autowired
+	CourseService courseService;
+
+	@Autowired
+	ShiftService shiftService;
+
+	@Autowired
+	DayOfWeekService dayOfWeekService;
+
+	@Autowired
+	ClassOpeningDao classOpeningDao;
+
+	@Autowired
+	RegisterCourseDao registerCourseDao;
+
+	@Autowired
+	StudentDetailService stuDetailService;
+
+	@Autowired
+	StudentDetailInCompletedClassService stuCompletedClassService;
+
+	@Autowired
+	StudentHistoryService studentHistoryService;
+
+	@Autowired
+	TeacherHistoryService teacherHistoryService;
 	
-	@Autowired ClassOpeningService service;
+	@Autowired
+	private InvoiceRepository invoiceRepository;
 	
-	@Autowired ClassOpeningDao dao;
+	@Autowired 
+	private InvoiceDetailRepository invoiceDetailRepository;
 	
-	@Autowired ClassDetailService classDetailService;
-	
-	@Autowired RegisterCourseService registerCourseService;
-	
-	@Autowired TeacherService teacherService;
-	
-	@Autowired ClassRoomService classRoomService;
-	
-	@Autowired TutorService tutorService;
-	
-	@Autowired CourseService courseService;
-	
-	@Autowired ShiftService shiftService;
-	
-	@Autowired DayOfWeekService dayOfWeekService;
-	
-	@Autowired ClassOpeningDao classOpeningDao;
-	
-	@Autowired RegisterCourseDao registerCourseDao;
-	
-	@Autowired StudentDetailService stuDetailService;
-	
-	@Autowired StudentDetailInCompletedClassService stuCompletedClassService;
-	
-	@Autowired StudentHistoryService studentHistoryService;
-	
-	@Autowired TeacherHistoryService teacherHistoryService;
-	
-	public void getResponsiveList(Model model, int idClass)
-	{
+	public void getResponsiveList(Model model, int idClass) {
 		List<TeacherDTO> teacherDTOs = teacherService.getAll();
 		List<ClassRoomDTO> classRoomDTOs = classRoomService.getAll();
 		List<TutorDTO> tutorDTOs = tutorService.getAll();
 		ClassOpeningDTO classOpeningDTO = service.getByID(idClass);
-		
+
 		int idShift = classOpeningDTO.getShiftDTO().getId();
 		List<ClassOpeningDTO> classOpeningDTOs = service.getDuplicateClassList(idShift, idClass);
-		
-		for(ClassOpeningDTO dto: classOpeningDTOs) {
-			if(dto.getTeacherDTO() != null) {
+
+		for (ClassOpeningDTO dto : classOpeningDTOs) {
+			if (dto.getTeacherDTO() != null) {
 				teacherDTOs.remove(dto.getTeacherDTO());
 			}
-			if(dto.getTutorDTO() != null) {
+			if (dto.getTutorDTO() != null) {
 				tutorDTOs.remove(dto.getTutorDTO());
 			}
-			if(dto.getClassRoomDTO() != null) {
+			if (dto.getClassRoomDTO() != null) {
 				classRoomDTOs.remove(dto.getClassRoomDTO());
 			}
 		}
@@ -113,71 +136,65 @@ public class ClassOpeningController {
 		model.addAttribute("tutorDTOs", tutorDTOs);
 		model.addAttribute("classRoomDTOs", classRoomDTOs);
 	}
-	
-	
+
 	@GetMapping("/class-list")
-	public String classList(Model model)
-	{
+	public String classList(Model model) {
 		model.addAttribute("classes", service.getAll());
 		return "class/classList";
 	}
-	
+
 	// Danh sach lop hoc phan theo trang thai
 	@GetMapping("/get-classes-by-status")
-	public String classesByStatus(Model model, @RequestParam(name = "status") int status)
-	{
+	public String classesByStatus(Model model, @RequestParam(name = "status") int status) {
 		List<ClassOpeningDTO> classOpeningDTOs = service.getByStatus(status);
 		model.addAttribute("classes", classOpeningDTOs);
 		return "class/classesByStatus";
 	}
-	
+
 	// INFO
 	@GetMapping("/info-class/{id}")
-	public String infoClass(Model model, @PathVariable(name = "id") int id)
-	{
+	public String infoClass(Model model, @PathVariable(name = "id") int id) {
 		ClassOpeningDTO dto = service.getByID(id);
 		CourseDTO courseDTO = courseService.getByID(dto.getCourseDTO().getId());
 		float days = courseDTO.getStudyTime() * 8;
 		model.addAttribute("class", dto);
 		model.addAttribute("details", classDetailService.getByidClassOpening(id));
 		model.addAttribute("days", days);
-		
+
 		// Các buổi học hoàn thành
 		List<LessonDTO> lessonDTOs = lessonService.getLessonsWereCompleted(id);
 		model.addAttribute("lessonsNumber", lessonDTOs.size());
 		return "class/infoClass";
 	}
-	
+
 	// Mo LH du kien
 	@GetMapping("/open-schedule-class")
-	public String openScheduleClass(Model model, HttpServletRequest request, 
-			@RequestParam(name = "idCourse", required = false) int idCourse)
-	{
+	public String openScheduleClass(Model model, HttpServletRequest request,
+			@RequestParam(name = "idCourse", required = false) int idCourse) {
 		List<CourseDTO> courseDTOs = courseService.getOfflineCourses();
 		model.addAttribute("size", 0);
-		if(request.getParameter("idCourse") != null) {
+		if (request.getParameter("idCourse") != null) {
 			idCourse = Integer.valueOf(request.getParameter("idCourse"));
 			List<RegisterCourseDTO> reCourseDTOs = registerCourseService.getRegistersCanOpenClass(idCourse);
 			model.addAttribute("registers", reCourseDTOs);
 			model.addAttribute("courseDTO", courseService.getByID(idCourse));
 			model.addAttribute("size", reCourseDTOs.size());
 		}
-		
+
 		model.addAttribute("courses", courseDTOs);
 		return "class/openScheduleClass";
 	}
-	
-	//Chap nhan mo lh du kien
+
+	// Chap nhan mo lh du kien
 	@PostMapping("/create-schedule-class/idCourse/{idCourse}")
 	public String createScheduleClass(Model model, @PathVariable(name = "idCourse") int idCourse,
-			@RequestParam(name = "idRegisters[]", required = false) List<Integer> idRegisters)
-	{
-		if(idRegisters.size() <= 0) {
+			@RequestParam(name = "idRegisters[]", required = false) List<Integer> idRegisters) {
+		if (idRegisters.size() <= 0) {
 			return "redirect:/admin/ll";
 		}
 		ClassOpening classOpening = new ClassOpening();
 		int quantityStudent = 0;
-		
+
 		classOpening.setStatus(-1);
 		classOpening.setIdCourse(idCourse);
 		classOpening = classOpeningDao.add(classOpening);
@@ -191,58 +208,53 @@ public class ClassOpeningController {
 		}
 		classOpening.setQuantityStudents(quantityStudent);
 		classOpeningDao.update(classOpening);
-		
+
 		return "redirect:/admin/info-class/" + classOpening.getId();
 	}
-	
+
 	// DANH SACH HOC SINH TRONG LOP
 	@GetMapping("/students-in-class")
-	public String studentsInClass(Model model, @RequestParam(name = "idClass") int idClass)
-	{
+	public String studentsInClass(Model model, @RequestParam(name = "idClass") int idClass) {
 		List<RegisterCourseDTO> registerCourseDTOs = registerCourseService.getStudentsInClass(idClass);
 		model.addAttribute("students", registerCourseDTOs);
 		model.addAttribute("class", service.getByID(idClass));
 		return "class/studentsInClass";
 	}
-	
+
 	// CHI TIET CAC BUOI HOC CUA LOP
 	@GetMapping("/lessons-in-class/{idClass}")
-	public String lessonsInClass(Model model, @PathVariable(name = "idClass") int idClass)
-	{
+	public String lessonsInClass(Model model, @PathVariable(name = "idClass") int idClass) {
 		List<LessonDTO> dtos = lessonService.getLessonsWereCompleted(idClass);
 		model.addAttribute("lessons", dtos);
 		model.addAttribute("class", service.getByID(idClass));
 		return "class/lessonsInClass";
 	}
-	
+
 	// CAC BUOI HOC BI HOAN CUA LH
 	@GetMapping("/postpone-class-list")
-	public String postponeClassList(Model model, @RequestParam(name = "idClass") int idClass)
-	{
+	public String postponeClassList(Model model, @RequestParam(name = "idClass") int idClass) {
 		List<LessonDTO> dtos = lessonService.getLessonsWerePostPone(idClass);
 		model.addAttribute("lessons", dtos);
 		model.addAttribute("class", service.getByID(idClass));
 		return "class/postponeClassList";
 	}
-	
+
 	// SAP XEP CA CHO LOP HOC
 	@GetMapping("/add-shift-for-class")
-	public String addShiftForClass(Model model, @RequestParam(name = "idClass") int idClass)
-	{
+	public String addShiftForClass(Model model, @RequestParam(name = "idClass") int idClass) {
 		model.addAttribute("shiftDTOs", shiftService.getAll());
 		model.addAttribute("days", dayOfWeekService.getAll());
 		model.addAttribute("classDTO", service.getByID(idClass));
 		return "class/addShiftForClass";
 	}
-	
+
 	// Chap nhan them ca
 	@PostMapping("/add-shift-for-class")
-	public String addShiftForClass(Model model, 
+	public String addShiftForClass(Model model,
 			@RequestParam(name = "dayOfWeeks", required = false) List<Integer> dayOfWeeks,
-			@ModelAttribute(name = "classDTO") ClassOpeningDTO classOpeningDTO)
-	{
+			@ModelAttribute(name = "classDTO") ClassOpeningDTO classOpeningDTO) {
 		ClassOpeningDTO classOpeningDTO2 = service.getByID(classOpeningDTO.getId());
-		for(Integer day: dayOfWeeks) {
+		for (Integer day : dayOfWeeks) {
 			ClassDetailDTO classDetailDTO = new ClassDetailDTO();
 			classDetailDTO.setClassOpeningDTO(service.getByID(classOpeningDTO.getId()));
 			classDetailDTO.setDayOfWeekDTO(dayOfWeekService.getById(day));
@@ -254,33 +266,31 @@ public class ClassOpeningController {
 		service.update(classOpeningDTO2);
 		return "redirect:/admin/info-class/" + classOpeningDTO.getId();
 	}
-	
+
 	// CAP NHAT LAI CA HOC
 	@GetMapping("/update-shift-for-class")
-	public String updateShiftForClass(Model model, @RequestParam(name = "idClass") int idClass)
-	{
+	public String updateShiftForClass(Model model, @RequestParam(name = "idClass") int idClass) {
 		model.addAttribute("shiftDTOs", shiftService.getAll());
 		model.addAttribute("days", dayOfWeekService.getAll());
 		model.addAttribute("classDTO", service.getByID(idClass));
 		return "class/updateShiftForClass";
 	}
-	
+
 	@PostMapping("/update-shift-for-class")
-	public String updateShiftForClass(Model model, 
+	public String updateShiftForClass(Model model,
 			@RequestParam(name = "dayOfWeeks", required = false) List<Integer> dayOfWeeks,
-			@ModelAttribute(name = "classDTO") ClassOpeningDTO classOpeningDTO)
-	{
+			@ModelAttribute(name = "classDTO") ClassOpeningDTO classOpeningDTO) {
 		ClassOpeningDTO classOpeningDTO2 = service.getByID(classOpeningDTO.getId());
 		List<ClassDetailDTO> classDetailDTOs = classDetailService.getByidClassOpening(classOpeningDTO.getId());
-		
-		for(Integer day: dayOfWeeks) {
+
+		for (Integer day : dayOfWeeks) {
 			ClassDetailDTO classDetailDTO = new ClassDetailDTO();
 			classDetailDTO.setClassOpeningDTO(service.getByID(classOpeningDTO.getId()));
 			classDetailDTO.setDayOfWeekDTO(dayOfWeekService.getById(day));
 			classDetailService.add(classDetailDTO);
 		}
-		
-		for(ClassDetailDTO classDetailDTO: classDetailDTOs) {
+
+		for (ClassDetailDTO classDetailDTO : classDetailDTOs) {
 			classDetailService.delete(classDetailDTO.getId());
 		}
 
@@ -288,20 +298,18 @@ public class ClassOpeningController {
 		service.update(classOpeningDTO2);
 		return "redirect:/admin/info-class/" + classOpeningDTO.getId();
 	}
-	
-	
+
 	// SAP XEP TAI NGUYEN CHO LOP HOC
 	@GetMapping("/add-resources-for-class")
-	public String addResourcesForClass(Model model, @RequestParam(name = "idClass") int idClass)
-	{
+	public String addResourcesForClass(Model model, @RequestParam(name = "idClass") int idClass) {
 		getResponsiveList(model, idClass);
 		model.addAttribute("classDTO", service.getByID(idClass));
 		return "class/addResourcesForClass";
 	}
-	
+
 	@PostMapping("/add-resources-for-class")
-	public String addResourcesForClass(Model model, @ModelAttribute(name = "classDTO") ClassOpeningDTO classOpeningDTO)
-	{
+	public String addResourcesForClass(Model model,
+			@ModelAttribute(name = "classDTO") ClassOpeningDTO classOpeningDTO) {
 		ClassOpening classOpening = dao.getByID(classOpeningDTO.getId());
 		classOpening.setIdTeacher(classOpeningDTO.getIdTeacher());
 		classOpening.setIdTutor(classOpeningDTO.getIdTutor());
@@ -309,49 +317,44 @@ public class ClassOpeningController {
 		dao.update(classOpening);
 		return "redirect:/admin/info-class/" + classOpeningDTO.getId();
 	}
-	
+
 	// DUA LOP VAO HOAT DONG
 	@GetMapping("/accept-class/{id}")
-	public String acceptClass(Model model, @PathVariable(name = "id") int id)
-	{
+	public String acceptClass(Model model, @PathVariable(name = "id") int id) {
 		ClassOpeningDTO dto = service.getByID(id);
 		dto.setStatus(0);
 		service.update(dto);
 		return "redirect:/admin/class-list";
 	}
-	
+
 	// ADD
 	@GetMapping("/add-class")
-	public String addClass(Model model)
-	{
+	public String addClass(Model model) {
 		model.addAttribute("classes", new ClassOpeningDTO());
 		return "class/addClass";
 	}
-	
+
 	@PostMapping("/add-class")
-	public String addClass(Model model, @Valid ClassOpeningDTO classOpeningDTO, BindingResult bindingResult)
-	{
-		if(bindingResult.hasErrors()) {
+	public String addClass(Model model, @Valid ClassOpeningDTO classOpeningDTO, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
 			model.addAttribute("classes", classOpeningDTO);
-			return "class/addClass";			
+			return "class/addClass";
 		}
 		service.add(classOpeningDTO);
 		return "redirect:/admin/class-list";
 	}
-	
+
 	// UPDATE
 	@GetMapping("/update-class/{id}")
-	public String updateClass(Model model, @PathVariable(name = "id") int id)
-	{
+	public String updateClass(Model model, @PathVariable(name = "id") int id) {
 		ClassOpeningDTO dto = service.getByID(id);
 		getResponsiveList(model, id);
 		model.addAttribute("class", dto);
 		return "class/updateClass";
 	}
-	
+
 	@PostMapping("/update-class")
-	public String updateClass(@ModelAttribute(name = "class") ClassOpeningDTO classOpeningDTO)
-	{
+	public String updateClass(@ModelAttribute(name = "class") ClassOpeningDTO classOpeningDTO) {
 		ClassOpeningDTO dto = service.getByID(classOpeningDTO.getId());
 		dto.setTeacherDTO(teacherService.getByID(classOpeningDTO.getIdTeacher()));
 		dto.setClassRoomDTO(classRoomService.getByID(classOpeningDTO.getIdClassRoom()));
@@ -361,15 +364,14 @@ public class ClassOpeningController {
 		service.update(dto);
 		return "redirect:/admin/class-list";
 	}
-	
+
 	// BO HOC VIEN TRONG LOP
 	@PostMapping("/remove-student-to-class/{idStudent}")
-	public String removeStudentToClass(Model model, @PathVariable(name = "idStudent") int id)
-	{
+	public String removeStudentToClass(Model model, @PathVariable(name = "idStudent") int id) {
 		RegisterCourseDTO registerCourseDTO = registerCourseService.getByID(id);
 		int idClass = registerCourseService.getByID(id).getClassOpeningDTO().getId();
 		ClassOpeningDTO classOpeningDTO = service.getByID(idClass);
-		
+
 		registerCourseDTO.setStatus(0);
 		registerCourseDTO.setClassOpeningDTO(null);
 		registerCourseService.update(registerCourseDTO);
@@ -377,28 +379,27 @@ public class ClassOpeningController {
 		service.update(classOpeningDTO);
 		return "redirect:/admin/students-in-class?idClass=" + idClass;
 	}
-	
+
 	// HUY LOP HOC
 	@PostMapping("delete-class/{id}")
-	public String deleteClass(Model model, @PathVariable(name = "id") int id)
-	{
+	public String deleteClass(Model model, @PathVariable(name = "id") int id) {
 		List<RegisterCourseDTO> registerCourseDTOs = registerCourseService.getByIdClassOpening(id);
 		List<ClassDetailDTO> classDetailDTOs = classDetailService.getByidClassOpening(id);
-		
-		for(RegisterCourseDTO dto: registerCourseDTOs) {
+
+		for (RegisterCourseDTO dto : registerCourseDTOs) {
 			dto.setStatus(0);
 			dto.setClassOpeningDTO(null);
 			registerCourseService.update(dto);
 		}
-		
-		for(ClassDetailDTO dto: classDetailDTOs) {
+
+		for (ClassDetailDTO dto : classDetailDTOs) {
 			classDetailService.delete(dto.getId());
 		}
-		
+
 		service.delete(id);
 		return "redirect:/admin/class-list";
 	}
-	
+
 	// Danh sach lop hoc da hoan thanh (status = 1)
 	@GetMapping("complete-class-list")
 	public String completeClassList(Model model) {
@@ -406,7 +407,7 @@ public class ClassOpeningController {
 		model.addAttribute("classDTOs", dtos);
 		return "class/completion/complete-class-list";
 	}
-	
+
 	// Hoan thanh lop hoc (Chờ xác nhận hoàn thành)
 	@GetMapping("/confirm-complete-class/{idClassOpening}")
 	public String classCompletion(Model model, @PathVariable(name = "idClassOpening") int idClassOpening) {
@@ -414,22 +415,22 @@ public class ClassOpeningController {
 		model.addAttribute("class", dto);
 		return "class/confirm-complete-class";
 	}
-	
+
 	@GetMapping("completed-class") // Nen la Post
 	public String completedClass(@RequestParam(name = "idClass") int idClass) {
 		ClassOpeningDTO dto = service.getByID(idClass);
 		dto.setStatus(1);
-//		service.updateStatusOfClass(dto);
-		
+		service.updateStatusOfClass(dto);
+
 		// Cập nhật lịch sử giảng viên
 		TeacherHistoryDTO teacherHistoryDTO = new TeacherHistoryDTO();
 		teacherHistoryDTO.setIdClass(idClass);
 		teacherHistoryDTO.setIdTeacher(dto.getTeacherDTO().getId());
 		teacherHistoryService.add(teacherHistoryDTO);
-		
+
 		return "redirect:/admin/complete-class-list";
 	}
-	
+
 	// Lay danh sach hoc vien trong lop de cap nhat trang thai
 	@GetMapping("/update-status-students")
 	public String updateStatusStudents(Model model, @RequestParam("idClass") int idClass) {
@@ -438,78 +439,116 @@ public class ClassOpeningController {
 		model.addAttribute("reDtos", reDtos);
 		return "class/completion/update-status-students";
 	}
-	
+
 	// Hoc vien qua lop hoc
 	@GetMapping("/completed-class/student-passed-class/{idRegister}")
-	public String studentCompleteClass(Model model, 
-			@PathVariable(name = "idRegister") int idRegister) {
-		
+	public String studentCompleteClass(Model model, @PathVariable(name = "idRegister") int idRegister) {
+
 		// 1. Lay thong tin dang ki
 		RegisterCourseDTO reDto = registerCourseService.getByID(idRegister);
-		
+
 		// 2. Mo khoa hoc (dang ki tiep theo)
 		// 2.1. Lay thong tin cac dang ki cua hoc vien
-		List<RegisterCourseDTO> registersOfStudent = 
-				registerCourseService.getByIdStudent(reDto.getStudentDTO().getId());
-		
+		List<RegisterCourseDTO> registersOfStudent = registerCourseService
+				.getByIdStudent(reDto.getStudentDTO().getId());
+
 		// Cho phep dang ki KH tiep theo
 		registersOfStudent.get(1).setEnable("Yes");
 		registerCourseService.update(registersOfStudent.get(1));
-		
+
 		// Luu thong tin hoc vien da qua lop
 		StudentDetailInCompletedClassDTO stuInCompletedClassDTO = new StudentDetailInCompletedClassDTO();
 		stuInCompletedClassDTO.setClassOpeningDTO(reDto.getClassOpeningDTO());
 		stuInCompletedClassDTO.setStudentDTO(reDto.getStudentDTO());
 		stuInCompletedClassDTO.setIsPassed(0);
 		stuCompletedClassService.add(stuInCompletedClassDTO);
-		
+
 		// Xoa dang ki
 		registerCourseService.delete(idRegister);
-		
+
 		return "redirect:/admin/update-status-students?idClass=" + reDto.getClassOpeningDTO().getId();
 	}
-	
+
 	// Hoc vien khong qua lop
 	@GetMapping("/completed-class/student-do-not-complete-class/{idRegister}")
-	public String studentDoNotCompleteClass(Model model, 
-			@PathVariable(name = "idRegister") int idRegister) {
+	public String studentDoNotCompleteClass(Model model, @PathVariable(name = "idRegister") int idRegister) {
 		// Lay thong tin dang ki
 		RegisterCourseDTO dto = registerCourseService.getByID(idRegister);
 		model.addAttribute("idRegister", idRegister);
 		model.addAttribute("student", dto.getStudentDTO());
 		return "class/completion/student-do-not-complete-class";
 	}
-	
+
 	// Hoc vien ko qua va duoc hoc lai mien phi
 	@GetMapping("/student-do-not-complete-class/free/{idRegister}")
-	public String free(Model model, 
-			@PathVariable(name = "idRegister") int idRegister) {
+	public String free(Model model, @PathVariable(name = "idRegister") int idRegister) {
+
 		// Lay thong tin dang ki
 		RegisterCourseDTO reDto = registerCourseService.getByID(idRegister);
 		int idClass = reDto.getClassOpeningDTO().getId();
-		
+
 		// Luu thong tin hoc vien chua qua lop
 		StudentDetailInCompletedClassDTO stuInCompletedClassDTO = new StudentDetailInCompletedClassDTO();
 		stuInCompletedClassDTO.setClassOpeningDTO(reDto.getClassOpeningDTO());
 		stuInCompletedClassDTO.setStudentDTO(reDto.getStudentDTO());
 		stuInCompletedClassDTO.setIsPassed(1);
-		stuCompletedClassService.add(stuInCompletedClassDTO);		
+		stuCompletedClassService.add(stuInCompletedClassDTO);
+
+		// Cap nhat lai dang ki ve chua co lop
+		reDto.setClassOpeningDTO(null);
+		registerCourseService.update(reDto);
+
+		return "redirect:/admin/update-status-students?idClass=" + idClass;
+	}
+
+	// Học viên học lại mất phí
+	@GetMapping("/student-do-not-complete-class/not-free/{idRegister}")
+	public String notFree(Model model, @PathVariable(name = "idRegister") int idRegister) {
+		// Lay thong tin dang ki
+		RegisterCourseDTO reDto = registerCourseService.getByID(idRegister);
+		int idClass = reDto.getClassOpeningDTO().getId();
+
+		// Luu thong tin hoc vien chua qua lop
+		StudentDetailInCompletedClassDTO stuInCompletedClassDTO = new StudentDetailInCompletedClassDTO();
+		stuInCompletedClassDTO.setClassOpeningDTO(reDto.getClassOpeningDTO());
+		stuInCompletedClassDTO.setStudentDTO(reDto.getStudentDTO());
+		stuInCompletedClassDTO.setIsPassed(1);
+		stuCompletedClassService.add(stuInCompletedClassDTO);
+		
+		// Tao moi mot hoa don thanh toan
+		Invoice invoice = new Invoice();
+		invoice.setIdStudent(reDto.getStudentDTO().getId());
+		invoice.setTotalPrice(reDto.getCourseDTO().getTuition() -
+				reDto.getCourseDTO().getTuition() * reDto.getComboDTO().getDiscount() / 100);
+		invoice.setNote("Học viên học lại khóa học " + reDto.getCourseDTO().getName());
+		invoice.setMoneyPaid(1);
+		invoice = invoiceRepository.save(invoice);
+		
+		// Tạo chi tiet hoa don
+		InvoiceDetail invoiceDetail = new InvoiceDetail();
+		invoiceDetail.setIdInvoice(invoice.getId());
+		invoiceDetail.setIdCourse(reDto.getCourseDTO().getId());
+		invoiceDetail.setUnitPrice(reDto.getCourseDTO().getTuition() -
+				reDto.getCourseDTO().getTuition() * reDto.getComboDTO().getDiscount() / 100);
+		if(reDto.getComboDTO() != null) {
+			invoiceDetail.setIdCombo(reDto.getComboDTO().getId());			
+		} else {
+			invoiceDetail.setIdCombo(0);
+		}
+		invoiceDetailRepository.save(invoiceDetail);
 		
 		// Cap nhat lai dang ki ve chua co lop
 		reDto.setClassOpeningDTO(null);
 		registerCourseService.update(reDto);
-		
+
 		return "redirect:/admin/update-status-students?idClass=" + idClass;
 	}
-	
-	// Học viên học lại mất phí
-	
-	
+
 	@GetMapping("class-completion/class-detail/{idClass}")
 	public String classCompletionDetail(Model model, @PathVariable(name = "idClass") int idClass) {
 		model.addAttribute("students", stuCompletedClassService.getByIdClass(idClass));
 		model.addAttribute("class", service.getByID(idClass));
 		return "class/completion/class-detail";
 	}
-	
-}	
+
+}

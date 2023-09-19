@@ -56,6 +56,20 @@ public class ReservationServiceImpl implements ReservationService{
 	}
 	
 	@Override
+	public List<ReservationDTO> getAll() {
+		List<ReservationDTO> dtos = new ArrayList<ReservationDTO>();
+		List<Reservation> reservations = reservationRepository.findAll();
+		
+		for(Reservation reservation: reservations) {
+			ReservationDTO dto = new ReservationDTO();
+			getInfo(dto, reservation);
+			dtos.add(dto);
+		}
+		
+		return dtos;
+	}
+	
+	@Override
 	public ReservationDTO getById(int id) {
 		Reservation reservation = reservationRepository.findByid(id);
 		if(reservation != null) {

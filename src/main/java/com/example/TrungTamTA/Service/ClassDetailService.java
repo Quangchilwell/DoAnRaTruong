@@ -11,6 +11,8 @@ public interface ClassDetailService {
 	
 	public List<ClassDetailDTO> getByidClassOpening(int idClassOpening);
 	
+	public List<ClassDetailDTO> getAllByTeacherIdAndStatus0(int teacherId);
+	
 	public void add(ClassDetailDTO classDetailDTO);
 	
 	public void update(ClassDetailDTO classDetailDTO);

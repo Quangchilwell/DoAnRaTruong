@@ -19,7 +19,8 @@ public interface LessonRepository extends JpaRepository<Lesson, Integer>{
 	public List<Lesson> findByidClassOpening(int idClass);
 	
 	@Query(value = "SELECT les FROM Lesson les\r\n"
-			+ "WHERE les.idClassOpening = ?1 AND les.day = ?2 AND les.status=" + LessonStatus.DA_HOAN_THANH)
+			+ "WHERE les.idClassOpening = ?1 AND les.day = ?2 AND les.status=" + LessonStatus.DA_HOAN_THANH
+			+" OR les.status = -1")
 	public Lesson checkClassCompleted(int idClass, Date date, int status);
 	
 	@Query(value = "SELECT les FROM Lesson les\r\n"
