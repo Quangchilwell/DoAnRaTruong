@@ -42,7 +42,7 @@ public class ShiftController {
 			model.addAttribute("shiftDTO", new ShiftDTO());
 			return "shift/addShift";
 		}
-		service.update(shiftDTO);
+		service.add(shiftDTO);
 		return "redirect:/admin/shift-list";
 	}
 

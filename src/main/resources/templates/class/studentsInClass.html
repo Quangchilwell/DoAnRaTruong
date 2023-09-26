@@ -45,8 +45,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<!--   <a class="btn btn-primary" th:href="@{/admin/add-student}">Thêm
-			mới học viên vào</a>-->
+		<a class="btn btn-primary" th:href="@{/admin/class/add-student(idCourse=${class.courseDTO.id}, idClass=${class.id})}">Thêm học viên vào lớp</a>
 			
 		<a class="btn btn-primary" th:href="@{/admin/info-class/__${class.id}__}">Quay lại lớp</a>
 		

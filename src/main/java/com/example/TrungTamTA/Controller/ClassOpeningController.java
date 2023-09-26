@@ -2,6 +2,7 @@ package com.example.TrungTamTA.Controller;
 
 import java.util.List;
 
+import javax.persistence.IdClass;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -189,9 +190,7 @@ public class ClassOpeningController {
 	@PostMapping("/create-schedule-class/idCourse/{idCourse}")
 	public String createScheduleClass(Model model, @PathVariable(name = "idCourse") int idCourse,
 			@RequestParam(name = "idRegisters[]", required = false) List<Integer> idRegisters) {
-		if (idRegisters.size() <= 0) {
-			return "redirect:/admin/ll";
-		}
+	
 		ClassOpening classOpening = new ClassOpening();
 		int quantityStudent = 0;
 
@@ -199,17 +198,52 @@ public class ClassOpeningController {
 		classOpening.setIdCourse(idCourse);
 		classOpening = classOpeningDao.add(classOpening);
 
-		for (Integer idRegister : idRegisters) {
-			RegisterCourse registerCourse = registerCourseDao.getByID(idRegister);
-			registerCourse.setStatus(1);
-			registerCourse.setIdClassOpening(classOpening.getId());
-			registerCourseDao.update(registerCourse);
-			quantityStudent += 1;
+		if(idRegisters != null) {
+			for (Integer idRegister : idRegisters) {
+				RegisterCourse registerCourse = registerCourseDao.getByID(idRegister);
+				registerCourse.setStatus(1);
+				registerCourse.setIdClassOpening(classOpening.getId());
+				registerCourseDao.update(registerCourse);
+				quantityStudent += 1;
+			}			
 		}
 		classOpening.setQuantityStudents(quantityStudent);
 		classOpeningDao.update(classOpening);
 
 		return "redirect:/admin/info-class/" + classOpening.getId();
+	}
+	
+	// Sắp xếp học viên vào lớp
+	@GetMapping("/class/add-student")
+	public String addStudentForCLass(Model model, @RequestParam(name = "idCourse") int idCourse, 
+			@RequestParam(name = "idClass") int idClass) {
+		List<RegisterCourseDTO> reCourseDTOs = registerCourseService.getRegistersCanOpenClass(idCourse);
+		model.addAttribute("registers", reCourseDTOs);
+		model.addAttribute("courseDTO", courseService.getByID(idCourse));
+		model.addAttribute("idClass", idClass);
+		return "class/add-student";
+	}
+	
+	// Xác nhận sắp xếp
+	@PostMapping("/class/confirm-add-student")
+	public String confirmAddStudent(Model model, @RequestParam(name = "idCourse") int idCourse,
+			@RequestParam(name = "idRegisters[]", required = false) List<Integer> idRegisters,
+			@RequestParam(name = "idClass") int idClass) {
+		ClassOpening classOpening = classOpeningDao.getByID(idClass);
+		int quantityStudent = 0;
+		if(idRegisters != null) {
+			for (Integer idRegister : idRegisters) {
+				RegisterCourse registerCourse = registerCourseDao.getByID(idRegister);
+				quantityStudent += 1;
+				registerCourse.setStatus(1);
+				registerCourse.setIdClassOpening(classOpening.getId());
+				registerCourseDao.update(registerCourse);
+			}			
+		}
+		classOpening.setQuantityStudents(classOpening.getQuantityStudents() + quantityStudent);
+		classOpeningDao.update(classOpening);
+
+		return "redirect:/admin/students-in-class?idClass=" + idClass;
 	}
 
 	// DANH SACH HOC SINH TRONG LOP
@@ -453,8 +487,10 @@ public class ClassOpeningController {
 				.getByIdStudent(reDto.getStudentDTO().getId());
 
 		// Cho phep dang ki KH tiep theo
-		registersOfStudent.get(1).setEnable("Yes");
-		registerCourseService.update(registersOfStudent.get(1));
+		if(registersOfStudent.size() > 1) {
+			registersOfStudent.get(1).setEnable("Yes");
+			registerCourseService.update(registersOfStudent.get(1));
+		}
 
 		// Luu thong tin hoc vien da qua lop
 		StudentDetailInCompletedClassDTO stuInCompletedClassDTO = new StudentDetailInCompletedClassDTO();
